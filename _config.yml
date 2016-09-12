@@ -1,0 +1,18 @@
+# Site settings
+title: Xianxu Hou blog
+email: 
+description: "From Coal Mining to Data Mining"
+baseurl: ""
+url: "http://houxianxu.github.io"
+# twitter_username: houxianxu
+github_username:  houxianxu
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+highlighter: rouge
+kramdown:
+  input: GFM
+  auto_ids: true
+  syntax_highlighter: rouge
