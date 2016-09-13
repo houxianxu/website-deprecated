@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Why and How I Write This Blog"
-description: "The first post to exlain the philosophy of this blog"
+comments: true
 excerpt: "Just start bloging :)"
 date:   2015-03-16 20:00:00
 ---
