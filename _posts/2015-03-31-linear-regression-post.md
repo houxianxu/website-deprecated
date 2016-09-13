@@ -107,7 +107,7 @@ When we see $$\sigma$$ as the unknown parameter, we could also calculate the "be
 - Following is code to implement the batch and stochastic gradient decent algorithms.
 
 
-```Python
+```python
 import numpy as np
 
 class LinearRegression:

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Linear Regression</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="From Coal Mining to Data Mining">
+    <link rel="canonical" href="http://houxianxu.github.io/2015/03/31/linear-regression-post/">
+    <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Xianxu Hou blog posts" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-61586501-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+</head>
+
+
+    <body>
+
+    <header class="site-header">
+
+  <div class="wrap">
+
+    <div style="float:left; margin-top:10px; margin-right:10px;">
+    <a href="/feed.xml">
+      <img src="/assets/rssicon.svg" width="40">
+    </a>
+    </div>
+
+    <a class="site-title" href="/">Xianxu Hou blog</a>
+    
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           viewBox="0 0 18 15" enable-background="new 0 0 18 15" xml:space="preserve">
+          <path fill="#505050" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0
+            h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#505050" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484
+            h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#505050" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0
+            c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+      <div class="trigger">
+        
+          <a class="page-link" href="/about/">About</a>
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrap">
+      <div class="post">
+
+  <header class="post-header">
+    <h1>Linear Regression</h1>
+    <p class="meta">Mar 31, 2015</p>
+  </header>
+
+  <article class="post-content">
+  <blockquote>
+  <p>This post dicusses how to come up with linear regression algorithm, specifically how to define the loss function and minimize the loss with gradient decent algorithm. I also implement the linear regression using Python (numpy) to do experiment with a datasets, and the result can be found in this <a href="http://houxianxu.github.io/implementation/LinearRegression.html">IPython notebook</a>.</p>
+</blockquote>
+
+<!-- more -->
+
+<h2 id="problem-setting">1. Problem setting</h2>
+<p>We want to use a <strong>predictor variable</strong> X to predict a <strong>quantitative response</strong> Y, such as using living area (X) to predict the price (Y) of house.</p>
+
+<h2 id="basic-idea">2. Basic idea</h2>
+<p>Becuase of just two variables, we can simply visualize the data on a scatter plot, then we can predict Y by the structure of the plot (see following figure)</p>
+
+<p>After getting the scatter plot, we can estimate the position of potiential point when given the x value and get the corresponding value y.
+<img src="http://houxianxu.github.io/images/linearRegression/1.jpg" alt="Scatter Plot of Two variables" title="Figure 1" /></p>
+
+<h2 id="can-we-do-better">3. Can we do better</h2>
+<p>So far it seems that the problem can be solved, however, we shold always ask the quesion, i.e., “Can we do better?”</p>
+
+<p>What’s the shortcoming of the above solution?</p>
+
+<ul>
+  <li>We have to firstly get the scatter plot, which is a problem when it scales to high dimension prediction problems.</li>
+  <li>We need our human’s eyes to find the position of the position of potential point. We humans are not happy with that, instead we want the computer to do all the work. In addition, we can easily get overwhelmed when amounts of prediction needed.</li>
+</ul>
+
+<h2 id="better-idea">4. Better idea</h2>
+<p>If we look at the structure of the scatter plot above, it is not hard to figure that the Y value is increasing when X gets bigger. So it is possible to find a model to fit all the data, then use the model instead for prediction.</p>
+
+<p>Then what’s kind of model we should use? Linear model may be a good choice because of its simplicity and ability to show the general trend.</p>
+
+<p>The next task is how to find the “best” line, such as \(y \) \(\approx\) \(f(x, w, b) =  w x + b, \) where w and b are the parameters of the function, in which w is called the <strong>weight</strong> and <strong>b</strong> is called bias, which doesn’t interact with the actual data \(x_i\). In order to find the “best” line, we need to define “best” and measure it. Ideally we hope <script type="math/tex">y_i == f_i</script> for every sample i, so we can use the difference or loss (<script type="math/tex">|y_i - f_i|</script>, also called <strong>L1 distance</strong>) between the target <script type="math/tex">y_i</script> and predicted <script type="math/tex">f_i</script> for measurement for a single sample. When considering all the samples, we want to minimize the average loss \(\frac{1}{m} \sum_{i=1}^m|f_i - y_i|\) for all samples (m is the number of samples). Alternatively <strong>L2 distance</strong> can be used as well and the average loss is 
+<script type="math/tex">L_2 = \frac{1}{m} \sum_i^m(f_i - y_i)^2,</script> of course other measurement could be used as well.</p>
+
+<p>Next we need to find the w and b to minimize <strong>L_2(w, b)</strong>, i.e.  least-squares loss, which is an optimization problem. Because of quadratic formula, we can guess <script type="math/tex">L_2</script> is has bowl-shaped appearance in 3-dimension that <script type="math/tex">L_2</script> in fact is a <a href="http://stanford.edu/%7Eboyd/cvxbook/">convex function</a>. So based on college caculus，we can compute the partial derivative of w and b, then set them to be zero and compute the w and b (the bottom of the shape).</p>
+
+<script type="math/tex; mode=display">\begin{cases}\frac{\partial L_2}{\partial w} = \frac{\partial f(x, w, b)}{\partial w} = 0 \\ \frac{\partial L_2}{\partial b} = \frac{\partial f(x, w, b)}{\partial w} = 0 \end{cases}</script>
+
+<p>Above approach directly compute the best w and b based on the property of convex function, and we could ask ourselves is there other ways (say indirectly) to get w and b? Maybe we could firstly inilize w and b randomly, and then try to make it better little by little. By analogy, a blind hiker tries his best to reach the bottom of a hill, specifically try to take a step at every point.</p>
+
+<ul>
+  <li>The first approach (Random Local Search) could be try to extend on foot in a random direction and take a step only if it leads down hill.</li>
+  <li>Another better way is to follow the direction of steepest decend, which is the <strong>gradient</strong> or <strong>derivative</strong> of loss function at one point, and the w and b can be updated by following the best direction (gradient) and a given step (known as learning rate). Obviously the learning rate will have big impact on our algorithm; we can only get a very small progress if learing rate is too small, however when making a bigger step, we may get a higher loss because the point maybe jump to the other side of the bowl-shaped line. So we could do some research here, e.g. how to decide the learning rate (try different values with validation method), maybe we could make it dynamically. Another potential problem here is that we use all the samples to complish just one update when taking compulation complex into account. One solution is to update the parameters according to the gradient of the error with respect to one single training example only. This alogrithm is called <strong>stochastic gradient descent</strong> or <strong>online gradient decent</strong>, and <strong>batch gradient descent</strong> for previous one. SGD often gets “close” to the minimum much faster than BGD, however it may never “converge” to the minimum. Another bonus is that it is possible to ensure that the parameters will converge to the global minimum rather then merely oscillate around the minimum.</li>
+</ul>
+
+<h2 id="genralization-for-high-dimension-data">5. Genralization for high dimension data</h2>
+<p>When there are more than 1 predictor variable, we just need to change the model as <script type="math/tex">y \approx f(x, w, b) = \sum_{j=1}^n x_j w_j + b = w^T x + b</script> (w and x are vector, and n is the number of features), in fact we can make the expression more compact by setting b = <script type="math/tex">w_0</script> and <script type="math/tex">x_0 = 1</script>, then <script type="math/tex">f(x, w) = w^T x.</script></p>
+
+<p>The loss <script type="math/tex">L = \frac{1}{2m} \sum_{i=1}^m(f(x^{(i)}, w) - y^{(i)})^2</script>, where <script type="math/tex">x^{(i)}</script> is a vector for all features <script type="math/tex">x_j^{(i)}</script> (j=0,1, … , n) for single sample i, and <script type="math/tex">y^{(i)}</script> is the target value for this example.</p>
+
+<p>Compute the gradient for all w:</p>
+
+<ul>
+  <li>Analytic gradient, using calculus to compute the gradient directly</li>
+</ul>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{equation}
+	 \begin{split} 
+	 \frac{\partial}{\partial w_j} L(w, x) &= \frac{\partial}{\partial w_j}  \frac{1}{2m} \sum_{i=1}^m  (f(x^{(i)}, w) 											  - y^{(i)})^2 \\ 
+	 									   &= \frac{1}{2m} \frac{\partial}{\partial w_j} \sum_{i=1}^m [(w_0 x_0^{(i)} + 	w_1 x_1^{(i)} + ... + w_n x_n^{(i)}) - y^{(i)}]^2 \\
+	 									   &= \frac{1}{m} \sum_{i=1}^m  (f(x^{(i)}, w) 											  - y^{(i)}) x_j^{(i)}
+	\end{split}
+	\end{equation} %]]></script>
+
+<ul>
+  <li>Numerical gradient, which is an approximation approach based on the definition of derivatives (or gradient). The derivative of a 1-D function is the limit of the function with respect its input. When the function takes more than one parameters, the derivatives are called partial derivatives.</li>
+</ul>
+
+<script type="math/tex; mode=display">\frac{df(x)}{dx} = \lim_{h \rightarrow 0}  \frac{f(x + h) - f(x)}{h} = \lim_{h \rightarrow 0}  \frac{f(x + h) - f(x - h)}{2h}</script>
+
+<p>Update w by gradient decient: <script type="math/tex">w_j := w_j - \alpha \frac{\partial}{\partial w_j} L(w, x)</script>, this regression is also called <strong>LMS</strong> standing for “least mean squares”.</p>
+
+<p>Compared with two dimension model that is a line in 2-D space, we can look on n-dimension model as a n-hyperplane (subspace) in (n+1)-D space, e.g. a plane in a 3-D space.</p>
+
+<h2 id="probabilistic-interpretation">6. Probabilistic interpretation</h2>
+<p>After understanding LMS regression above, we should again ask “Can we do better?”. I think the key or foundation of above is the least-square loss function <script type="math/tex">L_2 = \frac{1}{m} \sum_i^m(f_i - y_i)^2</script>. So why this is a reasonable choice?</p>
+
+<p>Because we just use f(w, x) to <strong>estimate</strong> the target y and <strong>expectation</strong> is often used for estimation, so we can interpret <script type="math/tex">f(w, x^{(i)}) = w^T x^{(i)}</script> as the expectation of estimation. So we could add an error term <script type="math/tex">\epsilon^{(i)}</script> to previous experession, as a result <script type="math/tex">y = w^T x^{(i)} + \epsilon^{(i)}</script>. Because the expectation could be higher or less than the target value, we could even assume all <script type="math/tex">\epsilon^{(i)}</script> are distributed IID (independently and identically distributed) according to a Gaussian Distribution (also called a Normal distribution) with mean zero and some variance <script type="math/tex">\sigma^2</script>, i.e., <script type="math/tex">\epsilon^{(i)} \sim \mathcal{N} (0,\sigma^2)</script>, so <script type="math/tex">y^{(i)} \sim \mathcal{N} (w^T x^{(i)},\sigma^2)</script></p>
+
+<p>So far when given a vector <strong>w</strong> and all <strong><script type="math/tex">x_j</script></strong>, we can compute the probability of <script type="math/tex">y^{(i)}</script> from the Gaussian Distribution. Naturally we want the maximize all the probability of <script type="math/tex">y^{(i)}</script> at the same time, and this method is called maximum likelihood. The corresponding likelihood function is</p>
+
+<script type="math/tex; mode=display">L(w; x) =  \prod_{i = i}^m \frac{1}{\sqrt{2 \, \pi} \sigma} exp({-\frac{(y^{(i)} - w^T x^{(i)})^2}{2 \sigma^2}})</script>
+
+<p>Instead of maximizing <script type="math/tex">L(w; x)</script>, we can also maximize any strictly increasing function of <script type="math/tex">L(w; x)</script>, naturally we can instead maximize likelihood <script type="math/tex">l(w; x)</script></p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{equation}
+	\begin{split} 
+	l(w; x) &= L(w; x) \\
+				&= \log \prod_{i = i}^m \frac{1}{\sqrt{2 \, \pi} \sigma} exp({-\frac{(y^{(i)} - w^T x^{(i)})^2}{2 \sigma^2}}) \\
+				&= \sum_{i=1}^m \log \frac{1}{\sqrt{2 \, \pi} \sigma} exp({-\frac{(y^{(i)} - w^T x^{(i)})^2}{2 \sigma^2}}) \\
+				&= m \log \frac{1}{\sqrt{2 \, \pi} \sigma} - \frac{1}{\sigma^2} \frac{1}{2} \sum_{i=1}^m (y^{(i)} - w^T x^{(i)})^2
+\end{split}
+	\end{equation} %]]></script>
+
+<p>Because w are the only unknown parameters (assume <script type="math/tex">\sigma</script> is known), we need only to minimize the second item <script type="math/tex">\frac{1}{\sigma^2} \frac{1}{2} \sum_{i=1}^m (y^{(i)} - w^T x^{(i)})^2</script>, which could be viewed as less-square loss.</p>
+
+<p>When we see <script type="math/tex">\sigma</script> as the unknown parameter, we could also calculate the “best” <script type="math/tex">\sigma</script> to maximize the likelihood. I think the assumption that all the point have the same <script type="math/tex">\sigma</script> is too strong to some degree, so if they are not the same and depend on X, we can get a different loss function.</p>
+
+<h2 id="get-your-hands-dirty-and-have-fun">7. Get your hands dirty and have fun</h2>
+
+<ul>
+  <li>Data: I use the data from linear regression exercise from Andrew Ng’s <a href="https://www.coursera.org/course/ml">Machine learning on Coursera</a>.</li>
+  <li>Setup: I choose Python (IPython, numpy etc.) on Mac for implementation, and the results are published in a IPython notebook, <a href="http://houxianxu.github.io/implementation/LinearRegression.html">click here </a> for the details</li>
+  <li>Following is code to implement the batch and stochastic gradient decent algorithms.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="k">class</span> <span class="nc">LinearRegression</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># set the weight vector</span>
+
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'bgd'</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">num_iters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="s">"""
+        Train linear regression using batch gradient descent or stochastic gradient descent
+
+        Parameters
+        ----------
+        X: (D x N) array of training data, each column is a training sample with D-dimension.
+        y: (N, ) 1-dimension array of target data with length N. 
+        method: (string) determine wheter use 'bgd' or 'sgd'
+        learning_rate: (float) learning rate for optimization
+        num_iters: (integer) number of steps to take when optimization
+        verbose: (boolean) if True, print out the progress when optimization
+
+        Returns
+        -------
+        losses_history: (list) of losses at each training iteration
+        """</span>
+        <span class="n">dim</span><span class="p">,</span> <span class="n">num_train</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># initilize weights with small values</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="c"># [1, D]</span>
+        <span class="n">losses_history</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_iters</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">'sgd'</span><span class="p">:</span>
+                <span class="c"># randomly choose a sample</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">num_train</span><span class="p">)</span>
+                <span class="n">loss</span><span class="p">,</span> <span class="n">grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_grad</span><span class="p">(</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loss</span><span class="p">,</span> <span class="n">grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_grad</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">losses_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+            <span class="c"># Update weights using matrix computing (vectorized)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad</span>
+
+            <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="p">(</span><span class="n">num_iters</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">'iteration </span><span class="si">%</span><span class="s">d / </span><span class="si">%</span><span class="s">d : loss </span><span class="si">%</span><span class="s">f'</span> <span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">num_iters</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">losses_history</span>
+
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="s">"""
+        Predict value of y using trained weights
+
+        Parameters
+        ----------
+        X: (D x N) array of data, each column is a sample with D-dimension.
+
+        Returns
+        -------
+        pred_ys: (N, ) 1-dimension array of y for N sampels
+        """</span>
+        <span class="n">pred_ys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pred_ys</span>
+
+
+    <span class="k">def</span> <span class="nf">loss_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vectorized</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="s">"""
+        Compute the loss and gradients
+
+        Parameters
+        ----------
+        The same as self.train function
+
+        Returns
+        -------
+        a tuple of two items (loss, grad)
+        loss: (float)
+        grad: (array) with respect to self.W 
+        """</span>
+        <span class="k">if</span> <span class="n">vectorized</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">linear_loss_grad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">linear_loss_grad_naive</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">linear_loss_grad</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="s">"""
+    Compute the loss and gradients with weights, vectorized version
+
+    Parameters and Returns are the same as LinearRegression.loss_grad, except including W as parameter
+    """</span>
+    <span class="c"># vectorized implementation </span>
+    <span class="n">num_train</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">f_mat</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c"># [1, D] * [D, N]</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">f_mat</span> <span class="o">-</span> <span class="n">y</span> <span class="c"># [1, N] - [1, N]</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_train</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">diff</span> <span class="o">*</span> <span class="n">diff</span><span class="p">)</span> <span class="c"># [1, N] * [N, 1] </span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">num_train</span> <span class="o">*</span> <span class="n">diff</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="c"># [1, N] * [N, D]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">linear_loss_grad_naive</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="s">"""
+    Compute the loss and gradients with weights, for loop version
+    """</span>
+    <span class="n">num_train</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">W</span><span class="p">)</span> <span class="c"># [1, D]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_train</span><span class="p">):</span>
+        <span class="n">sample_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="c"># a vector</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">f</span> <span class="o">+=</span> <span class="n">sample_X</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">f</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">loss</span> <span class="o">+=</span> <span class="n">diff</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">grad</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">sample_X</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            
+    <span class="n">loss</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_train</span><span class="p">)</span> <span class="o">*</span> <span class="n">loss</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">num_train</span><span class="p">)</span> <span class="o">*</span> <span class="n">grad</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h2 id="summary">8. Summary</h2>
+<ul>
+  <li>We all should keep it in mind that linear regression is based on the assumption that the true model is linear or close to linear, so we should be very careful if we don’t known the true model in advance.</li>
+  <li>Most people use least square error to indicate the loss of the linear model and it can be interpretated from  probabilistic aspect, i.e., assuming that the errors are distributed IID according to a Gaussian Distribution, the probability of y based on x (<code class="highlighter-rouge">p(y|x)</code>) for all the samples can be maximized to minimize the least square error. Of course, we can choose other loss function as long as it makes sense to measure the agreement between the predicted scores and the ground truth value.</li>
+  <li>We can use normal equation <script type="math/tex">W = (X^T X)^{-1} X^T y</script> to compute W directly based on calculus, however it works slow when n is large, instead, gradient decent algorithm is more practical based on the bowl-shape of loss function. The basic idea is to reduce the loss step by step.</li>
+  <li>For implementation, it is critical to use matrix calculation. Not only can it speed up the computation, but also can make code simpler and conciser when compared to naive loop version.</li>
+</ul>
+
+<h2 id="reference-and-further-reading">9. Reference and further reading</h2>
+<ul>
+  <li>Andrew Ng’s <a href="https://www.coursera.org/course/ml">Machine learning on Coursera</a></li>
+  <li>Andrew Ng’s machine learing notes on <a href="http://see.stanford.edu/materials/aimlcs229/cs229-notes1.pdf">Stanford Engineering Everywhere (SEE)</a></li>
+  <li><a href="http://modulecatalogue.nottingham.ac.uk/Nottingham/asp/moduledetails.asp?year_id=000113&amp;crs_id=021211">Machine Learning Module</a> in the University of Nottingham</li>
+</ul>
+
+
+  </article>
+
+  <!-- mathjax -->
+  
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  
+  <!-- disqus comments -->
+ 
+ <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'houxianxu'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  
+  
+</div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrap">
+
+    <!-- <h2 class="footer-heading">Xianxu Hou blog</h2> -->
+
+    <div class="footer-col-1 column">
+      <ul>
+        <li>Xianxu Hou blog</li>
+        <!-- <li><a href="mailto:"></a></li> -->
+      </ul>
+    </div>
+
+    <div class="footer-col-2 column">
+      <ul>
+        <li>
+          <a href="https://github.com/houxianxu">
+            <span class="icon github">
+              <svg version="1.1" class="github-icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+                <path fill-rule="evenodd" clip-rule="evenodd" fill="#C2C2C2" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761
+                c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32
+                c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472
+                c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037
+                C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65
+                c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261
+                c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082
+                c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129
+                c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+              </svg>
+            </span>
+            <span class="username">houxianxu</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+
+    <div class="footer-col-3 column">
+      <p class="text">From Coal Mining to Data Mining</p>
+    </div>
+
+  </div>
+
+</footer>
+
+
+    </body>
+</html>
