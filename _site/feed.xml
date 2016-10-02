@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Xianxu Hou blog</title>
+    <title>Xianxu Hou's blog</title>
     <description>From Coal Mining to Data Mining</description>
     <link>http://houxianxu.github.io/</link>
     <atom:link href="http://houxianxu.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 13 Sep 2016 11:53:58 +0800</pubDate>
-    <lastBuildDate>Tue, 13 Sep 2016 11:53:58 +0800</lastBuildDate>
+    <pubDate>Sun, 02 Oct 2016 10:35:23 +0800</pubDate>
+    <lastBuildDate>Sun, 02 Oct 2016 10:35:23 +0800</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>

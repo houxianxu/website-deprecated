@@ -1,0 +1,431 @@
+<p>Support vector machine (SVM) is often considered one of the best “out of the box” classifiers, and in this post I try to explain how we can come up with this alogrithm from scratch.</p>
+
+<p>I also implement the SMV for image classification with <a href="http://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10 dataset</a> by Python (numpy). <a href="/implementation/SVM.html">This</a> is for mutli-classification by using SVM loss.</p>
+
+<h2 id="problem-setting">1. Problem setting</h2>
+<p>Classification problem is to classify different objects into different categories. For simplicity, we just focus on <strong>binary classification</strong> that y can take two values 1 or -1 (indicating two classes), and we firstly assume the two classes are linearly separable. After all, it is reasonable to solve problems from simple to complex.</p>
+
+<h2 id="basic-idea-what-we-have-known">2. Basic idea (What we have known)</h2>
+<p>If the data is linearly separable, our goal is to find the such a line <script type="math/tex">f(x) = w^Tx + b = 0</script> (2-dimension) that divides the plane into 2 parts and each part represent one class (see following figure). If the data is represented in high dimension say N-dimension, what we need to do is to find a hyperplane <script type="math/tex">w^Tx + b = 0</script> which is subspace with dimension (N-1)dimension. So if <script type="math/tex">w^Tx + b = 0</script>, the label <script type="math/tex">y = 1</script>, otherwise <script type="math/tex">y = -1</script>. However, the problem is that in fact there exists infinite such hyperplanes if the data can be perfectly linearly separated, because a given separating hyperplane can be shifted a tiny bit up or down, or rotated without coming into contact with any of the observations (the line 1, 2 and 3 in the following figure) . Of course we can randomly choose a separating line.</p>
+
+<!-- ![Scatter Plot of Two variables](/images/SVM/1.png "linearly separable") -->
+<center><img src="/images/SVM/1.png" width="80%" /></center>
+
+<h2 id="maximal-margin-classifier">3. Maximal Margin Classifier</h2>
+<p><strong>Can we do better?</strong></p>
+
+<p>Is that possible for us to choose the even “best” line or hyperplane from the infinit possible separating hyperplanes? So the next question is how to define the “best” hyperplane. Because the final goal is trying to use the hyperplane as decision boundary to distinguish the two classes, so we can choose the hyperplane which can make the distinction more obvious. Intuitively the separating hyperplane should be farthest from the training observations, that’s to say, the distance between the nearest observation and the hyperplane should be maximized. This distance is usually called margin and the corresponding classifier is known as maximal margin classifier, and the separating hyperplane has the farthest minimum distance to the training observations. Take the above figure for example, line 3 is better than line 1 and 2.</p>
+
+<p>From figure below, we can see that there are 3 training points having equal distance from the maximal margin line and the two dash lines indicate the width of margin. These 3 observations are known as <strong>support vectors</strong>. Since these points can interpreted as n-1 dimension vectors and define the maximal margin, in other words, these vectors can “support” the maximal margin hyperplane in the sense that if these points were moved slightly then the maximal margin hyperplane would move as well. What’s more, the maximal margin hyperplane is only depends on the support vectors, not other observation.</p>
+
+<!-- ![Support Vector](/images/SVM/2.png "support vector") -->
+<center><img src="/images/SVM/2.png" width="80%" /></center>
+
+<p><strong>Calculate the maximal margin</strong>
+In order to calculate the maximal margin, we should figure out how to calculate the geometric margin which is the distance from a point to a line or hyperplane. As following figure, the point at A representing the input <script type="math/tex">x^{(i)}</script> of some training example. Its distance to the decision boundary (a line with (w, b)) is <script type="math/tex">\gamma^{(i)}</script>, is given by the line segment AB. And the distance <script type="math/tex">\gamma^{(i)}</script> can be calculate in the following way:</p>
+
+<!-- ![geometric margin](/images/SVM/3.png "geometric margin") -->
+<center><img src="/images/SVM/3.png" width="80%" /></center>
+
+<p>vector <script type="math/tex">BA = x_A - x_B</script>, unit vector is <script type="math/tex">w/\|w\|</script>, so the point B is given by <script type="math/tex">x^{(i)} - \gamma^{(i)} w/\|w\|</script>. And point B is on the decision boundary <script type="math/tex">w^T x + b</script>, therefore</p>
+
+<script type="math/tex; mode=display">w^T \big(x^{(i)} - \gamma^{(i)} \frac{w}{\|w\|}\big) + b = 0</script>
+
+<p>Then solving <script type="math/tex">\gamma^{(i)}</script> yields:</p>
+
+<script type="math/tex; mode=display">\gamma^{(i)} = \frac{w^T x^{(i)} + b}{\|w\|}</script>
+
+<p>Using bias trick to represent the two parameters <strong>w</strong> and <strong>b</strong> as one, i.e. set <script type="math/tex">x_0 = 1</script> and add <script type="math/tex">w_0</script> to weights vector <strong>w</strong>.
+Then we get:</p>
+
+<script type="math/tex; mode=display">\gamma^{(i)} = \frac{w^T x^{(i)}}{\|w\|}</script>
+
+<p>Therefore based on a set of m training observations <script type="math/tex">x_1, x_2, ..., x_m</script> and associated class labels <script type="math/tex">y_1, y_2, ..., y_m \in \big\{1, -1\big\}</script>, the assumption that the training set is linearly separable, the maximal margin line or hyperplane is the solution to the optimization problem.</p>
+
+<script type="math/tex; mode=display">Maximize_{w, M} \:\:\: \frac{M}{\|w\|}  \:\:\:......... (1)</script>
+
+<p>Subject to</p>
+
+<script type="math/tex; mode=display">y^{(i)} (W^Tx^{(i)}) = M \:\: \forall i = 1, 2, ..., m \:\:\:......... (2)</script>
+
+<p>The constrains (2) guarantees that each observation will be on the correct side of the decision boundary and the value of <script type="math/tex">y^{(i)} (W^Tx^{(i)})</script> is at least M, provided that M is positive. In addition, the margin is given by <script type="math/tex">\frac{w^T x^{(i)}}{\|w\|}</script>, the objective function <script type="math/tex">(1) \frac{M}{\|w\|}</script> ensures that each observation has at least a distance <script type="math/tex">\frac{M}{\|w\|}</script> from the hyperplane or decision boundary. Hence, the optimization problem choose <strong>w</strong> and <strong>M</strong> to maximize <script type="math/tex">\frac{M}{\|w\|}</script>.</p>
+
+<p><strong>Solve the optimization problem</strong></p>
+
+<p>If we could solve the optimization problem above efficiently, then we would be done. In fact the optimization problem above is very difficult because we have a nasty objective <script type="math/tex">\frac{M}{\|w\|}</script> function, which is non-convex. So can we do better?</p>
+
+<p>The final goal is to find the decision boundary <script type="math/tex">w^T x = 0</script>, so multiplying w by some constant can affect the margin but doesn’t change the decision boundary. Therefore, we can set the value of <script type="math/tex">w^T x_0</script> for the nearest point to be 1, i.e., <script type="math/tex">M = 1</script>. Additionally maximize <script type="math/tex">\frac{1}{\|w\|}</script> is the same to minimize |w|, again is the same thing as minimizing <script type="math/tex">\|w\|^2</script>. Therefore we have the following optimization problem:</p>
+
+<script type="math/tex; mode=display">Minimize_w \:\:\: \frac{1}{2}\|w\|^2  \:\:\:......... (1)</script>
+
+<p>Subject to</p>
+
+<script type="math/tex; mode=display">y^{(i)} (W^Tx^{(i)}) = 1 \:\: \forall i = 1, 2, ..., m \:\:\:......... (2)</script>
+
+<p>The new version of optimization problem can be efficiently solved, because the objective function is a convex quadratic function and all the constrains are linear. The problem can be solved by Quadratic Program (QR) software such as <a href="http://cvxopt.org">CVXOPT</a> for Python.</p>
+
+<h2 id="dual-form-kernel-and-support-vector-machine">4 Dual Form, Kernel and Support Vector Machine</h2>
+<p>According to <a href="http://see.stanford.edu/materials/aimlcs229/cs229-notes3.pdf">Lagrange duality</a>, we can get the dual form of the above optimization problem.</p>
+
+<script type="math/tex; mode=display">Maximize_{\alpha} \:\: W(\alpha) = \sum_{(i=1)}^m \alpha_i - \frac{1}{2} \sum_{i, j=1}^m y^{(i)}y^{(j)} \alpha_i \alpha_j \langle x^{(i)}, x^{(j)}\rangle</script>
+
+<p>Subject to</p>
+
+<script type="math/tex; mode=display">\alpha_i \geq 0, \forall \: i = 1, 2, ..., m</script>
+
+<script type="math/tex; mode=display">\sum_{i=1}^m \alpha_i y^{(i)} = 0</script>
+
+<p>The <script type="math/tex">\langle x^{(i)}, x^{(j)}\rangle = \big(x^{(i)}\big)^T x^{(j)}</script>, and the original <strong>w</strong> = <script type="math/tex">\sum_i^m \alpha_i y^{(i)}x^{(i)}</script>. And the decision boundary becomes</p>
+
+<script type="math/tex; mode=display">f(x) = w^T + b = \big(\sum_i^m\alpha_i y^{(i)}x^{(i)}\big)^T x + b = \sum_i^m\alpha_i y^{(i)} \langle x^{(i)}, x\rangle + b = 0</script>
+
+<p>Therefore, we can solve the dual problem (optimizing the <script type="math/tex">\alpha</script>) in lieu of solving the primal optimization problem. Specifically in order to ake a prediction, all we need to do is to calculate the inner product between the new point x and each of the training samples <script type="math/tex">x_i</script>. However, it turns out that <script type="math/tex">\alpha_i's</script> will be zero except for the support vectors, so we only need to find the inner products between x and support vectors to make prediction.</p>
+
+<p>So far, what we’ve got is just a linear classifier or linear boundary <script type="math/tex">w^T x + b = 0</script>. And if we want a non-linear boundary, what we can do? Intuitively we can use non-linear items in the boundary functions such as <script type="math/tex">wx^2</script> and <script type="math/tex">wx^3</script>. In general we need to use a non-linear function (g(x)) to transfer the original input x to a new value g(x) which are passed into learning algorithm. These new quantities are often called <strong>features</strong> and the original input x can be called <strong>attributes</strong>. Usually people use <script type="math/tex">\phi(x)</script> the <strong>feature mapping</strong>, which maps from attributes to features. Here is a example:</p>
+
+<script type="math/tex; mode=display">\phi(x) =  \begin{bmatrix} x\\ x^2 \\ x^3 \end{bmatrix}</script>
+
+<p>Then the decision boundary is <script type="math/tex">f(x) = w_1 x + w_2 x^2 + w_3 x^3 + b = 0</script></p>
+
+<p>We should notice that the above decision boundary is a non-linear in 2-dimension space, i.e., <script type="math/tex">w_1 x + w_2 x^2 + w_3 y + b = 0</script>, however we get a plane in a 3-dimension space <script type="math/tex">w_1 x + w_2 y + w_3 z + b = 0</script>, which we can be solved by using maximal classifier discussed above.</p>
+
+<p>Thus, rather than using the original input attributes x, we may instead use the features <script type="math/tex">\phi(x)</script>. To do so, we just need to change the previous algorithm by replacing x with <script type="math/tex">\phi(x)</script>.</p>
+
+<p>The next question is how to choose the feature mapping, and we could choose arbitrary non-linear functions to compute features <script type="math/tex">\phi(x)</script>, and then calculate the inner product of <script type="math/tex">\phi(x)^T \phi(z)</script>. However, it may be very expensive to compute the features and the inner product when features are high dimension vectors.</p>
+
+<p>One important property of the dual form is that the algorithm can be written entirely in terms of inner product <script type="math/tex">\langle x, z\rangle</script>, which means that we can replace the inner product with <script type="math/tex">\langle \phi(x), \phi(z) \rangle</script>. And we define the <strong>Kernel</strong> as following:</p>
+
+<script type="math/tex; mode=display">K(x, z) = \phi(x)^T \phi(z) = \langle \phi(x), \phi(z) \rangle</script>
+
+<p>The goal is to compute the <script type="math/tex">K(x, z)</script>, and the interesting is that <script type="math/tex">K(x, z)</script> may be not expensive to calculate because we don’t firsly need to compute the <script type="math/tex">\phi(x)</script> and then calculate the inner product (see following example).</p>
+
+<p>Suppose the <script type="math/tex">x, z \in \mathbb{R}^n</script> and we can can construct the Kernel:</p>
+
+<script type="math/tex; mode=display">K(x, z) = (x^T z)^2</script>
+
+<p>We can rewrite it as following</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{equation}
+     \begin{split} 
+     K(x, z)
+     &= (x^T z)^2 \\
+     &= \big(\sum_{i=1}^n x_i z_i\big) \big(\sum_{j=1}^n x_j z_j) \\
+     &= \sum_{i=1}^n \sum_{j=1}^n x_i x_j z_i z_j \\
+     &= \sum_{i, j=1}^n (x_i x_j)(z_i z_j)
+    \end{split}
+    \end{equation} %]]></script>
+
+<p>We can see <script type="math/tex">K(x, z) = \phi(x)^T \phi(z)</script>, where the <script type="math/tex">\phi(x)</script> is shown below (take n = 3)</p>
+
+<script type="math/tex; mode=display">\phi(x) = \begin{bmatrix} x_1x_1\\ x_1x_2 \\x_1x_3\\x_2x_1\\x_2x_2\\x_2x_3\\x_3x_1\\x_3x_2\\x_3x_3 \end{bmatrix}</script>
+
+<p>So we can efficiently calculate the <script type="math/tex">K(x, z) = (x^T z)^2</script> in <script type="math/tex">O(n)</script> because of n-dimension input attributes x. However, it takes <script type="math/tex">O(n^2)</script> to calculate <script type="math/tex">\phi(x)</script>.</p>
+
+<p>In general, we can also use <script type="math/tex">K(x, z) = (X^T z + c)^d</script> to achieve feature mapping, which is known as <strong>ploynomial kernel</strong> of degree <strong>d</strong>. This kernel essentially amount to fitting a support vector classifier in a higher-dimensional space involving polynomials of degree d, which leads to a much more flexible decision boundary. Notice that though working in a very high dimension space, we only need <script type="math/tex">O(n)</script> time to compute the K(x, z) because we never need to explicitly represent feature vectors in the very high dimensional feature space.</p>
+
+<p>Another popular choice is <strong>Gaussian Kernel</strong> or <strong>Radial Kernel</strong>:</p>
+
+<script type="math/tex; mode=display">K(x, z) = exp \big( - \frac{(x-z)^2} {2 \sigma^2} \big)</script>
+
+<p>We can use Taylor expansion to expand the Gaussian Kernel (<script type="math/tex">e^x = \sum_{n=0}^\infty \frac {x^n} {n!}</script>), and we can see that the feature vector that corresponds to the Gaussian kernel has infinite dimensionality, and the feature space is implicit.</p>
+
+<p>How does the Kernel work? One intuition is to think of <script type="math/tex">K(x, z)</script> as a measurement of how similar are <script type="math/tex">\phi(x)</script> and <script type="math/tex">\phi(z)</script>, or of how similar are x and z. If  <script type="math/tex">\phi(x)</script> and  <script type="math/tex">\phi(z)</script> are close to each other, then <script type="math/tex">K(x, z) = \phi(x)^T \phi(z)</script> is expected to large, otherwise <script type="math/tex">\phi(x)</script> and  <script type="math/tex">\phi(z)</script> are far apart, then <script type="math/tex">K(x, z)</script> is small. Recall that we use the sign of</p>
+
+<script type="math/tex; mode=display">f(x) = w^T + b =\sum_i^m\alpha_i y^{(i)} \langle x^{(i)}, x\rangle + b =\sum_i^m\alpha_i y^{(i)} \langle \phi(x^{(i)}), \phi(x)\rangle + b</script>
+
+<p>for prediction. Look at Gaussian Kernel, if training observations that are far from test observation x will play essentially little role in the predicted class label for x. This means that Gaussian Kernel has a local hehavior, in the sense that only nearby training observations have a big effect on a class label for test observation.</p>
+
+<p>The <strong>Support Vector Machine</strong> is an extension of the support vector classifier that results from enlarging the feature space in a specific way, using kernels.</p>
+
+<h2 id="the-non-separable-case">5 The Non-separable Case</h2>
+<p>The SVMs work very well for classification if a separating hyperplane exists, however, we will get stuck when the data is overlapped and non-separable because there is no max margin. So we can extend the separating hyperplane in order to almost separate the classes based on soft margin. We instead allow some observations to be on the incorrect side of the margin, or even the incorrect side of the hyperplane. We reformulate the optimization problem as follows:</p>
+
+<script type="math/tex; mode=display">Minimize_w \:\:\: \frac{1}{2}\|w\|^2 + C \sum_{i=1}^m \zeta_i</script>
+
+<p>Subject to</p>
+
+<script type="math/tex; mode=display">y^{(i)} (W^Tx^{(i)}) = 1 -\zeta_i \:\: \forall i = 1, 2, ..., m</script>
+
+<p>Thus, we permit the observation to be on the incorrect side of the margin, or even the incorrect side of the hyperplane (<script type="math/tex">% <![CDATA[
+1-\zeta_i < 0 %]]></script>), and we pay a cost of the objective function being increased by <script type="math/tex">C\zeta_i</script>. The big number C ensuring that <script type="math/tex">\zeta_i</script> is small and most examples have at least soft max margin.</p>
+
+<p>And the dual form is as follows:</p>
+
+<script type="math/tex; mode=display">Maximize_{\alpha} \:\: W(\alpha) = \sum_{(i=1)}^m \alpha_i - \frac{1}{2} \sum_{i, j=1}^m y^{(i)}y^{(j)} \alpha_i \alpha_j \langle x^{(i)}, x^{(j)}\rangle</script>
+
+<p>Subject to</p>
+
+<script type="math/tex; mode=display">0 \leq \alpha_i \geq C, \forall \: i = 1, 2, ..., m</script>
+
+<script type="math/tex; mode=display">\sum_{i=1}^m \alpha_i y^{(i)} = 0</script>
+
+<p>Above is the basic idea of Support Vector Machine (SVM), all that remains is to to find a algorithm for solving the dual problem. The SMO (sequential minimal optimization) algorithm give an efficient way to solve the dual problem. You can find the details <a href="http://cs229.stanford.edu/materials/smo.pdf">here</a>.</p>
+
+<h2 id="multiclass-classification">6 Multiclass classification</h2>
+<p>We need to generalize to the multiple class case, that’s to say, the value of y is not binary any more, instead y can equal to 0, 1, 2, …, k.</p>
+
+<p>####Transfer multi-class classification into binary classification problem</p>
+
+<p>We need change multiple classes into two classes, and the idea is to construct several logistic classifier for each class. We set the value of y (label) of one class to 1, and 0 for other classes. Thus, if we have K classes, we build K SVM and use it for prediction. The idea is the same as use <a href="http://houxianxu.github.io/logistic-softmax-regression/#multiclass">logistic regression</a> for multi-classfication.
+<!-- ![One vs all](/images/logisticRegression/4.png "Figure 4") --></p>
+<center><img src="/images/logisticRegression/4.png" width="80%" /></center>
+
+<h4 id="multiclass-support-vector-machine-loss">Multiclass Support Vector Machine loss</h4>
+<p>Similar to <a href="http://houxianxu.github.io/logistic-softmax-regression/">softmax</a>, For mutilple classes problems (K categoires), it is possible to establish a mapping function for each class. We can simply use a linear mapping for all classes (K mapping function):</p>
+
+<script type="math/tex; mode=display">f(x^{(i)}, W, b) = Wx^{(i)} + b =f(x^{(i)}, W) = Wx^{(i)} \:(bias \: trick)</script>
+
+<p>Intuitively we wish that the correct class has a score that is higher than the scores of incorrect classes. Thus, we can predict the test observation as the class with the highest score. Next we should find a loss function to optimize the parameters.</p>
+
+<p>For sample <script type="math/tex">x_i</script>, the vector <script type="math/tex">f(x_i, W)</script> is the scores for all the classes, <script type="math/tex">y_i</script> is the correct class and <script type="math/tex">f(x_i, W)_{y_i}</script> is the score corresponding to the correct class for <script type="math/tex">x_i</script>. The score for the <script type="math/tex">j^{th}</script> class is <script type="math/tex">f(x_i, W)_j</script>. The multiclass SVM loss for the <script type="math/tex">i^{th}</script> sample is as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{equation}
+     \begin{split} 
+		L_i &= \sum_{j\neq y_i} max(0, f(x_i, W)_j - f(x_i, W)_{y_j} + \Delta) \\
+	   		&= \sum_{j\neq y_i} max(0, w_j^T x_i - w_{y_i}^T x_i + \Delta)
+	\end{split}
+    \end{equation} %]]></script>
+
+<p>Though the expression seems complex, the interpretation is relatively simple. Firstly every class contribute to the loss of one sample, and the correct class doesn’t lead to loss. We want the correct class for sample <script type="math/tex">x_i</script> have a score <script type="math/tex">f(x_i, W)_{y_j}</script> higher than the incorrect classes <script type="math/tex">f(x_i, W)_j</script> by some fixed margin. If the incorrect class score adds some fix margin still less than correct class score, i.e., <script type="math/tex">% <![CDATA[
+f(x_i, W)_j + \Delta < f(x_i, W)_{y_j} %]]></script>, then set the loss to be zero. Because the correct score is “much” big than than the incorrect scores, which we desire to achieve. However, if the the correct class score is not “big” enough or even less than the incorrect class scores, then we set the loss to be <script type="math/tex">f(x_i, W)_j + \Delta - f(x_i, W)_{y_j}</script>. Additionally the function max(0, -) is often called the <strong>hinge loss</strong>.</p>
+
+<p>We still need regularization to our loss function. Suppose that we’ve got a set of weights <strong>W</strong> that can correctly classify all the samples, then the set of <strong>W</strong> is not necessarily unique. Firstly if we multiply a number <script type="math/tex">\lambda</script> <strong>W</strong>, then the decision boundary remains the same. So the scores stretches accordingly but the magin <script type="math/tex">\Delta</script> doesn’t change. Usually people add <script type="math/tex">L_2</script> regularization penalty <strong>R(W)</strong> to loss function.</p>
+
+<script type="math/tex; mode=display">R(W) = \sum_k \sum_l W_{k, l}^2</script>
+
+<p>So the full loss is as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{equation}
+     \begin{split}  
+		L &= \frac{1}{m} \sum_i L_i + \lambda R(W) \\
+		  &= \frac{1}{m} \sum_i \sum_{j \neq y_{y_i}} [max(0, w_j^T x_i - w_{y_i}^T x_i + \Delta)] + \lambda \sum_k \sum_l W_{k, l}^2
+	\end{split}
+    \end{equation} %]]></script>
+
+<p>When <script type="math/tex">\lambda</script> is big, then <script type="math/tex">R(W) = \sum_k \sum_l W_{k, l}^2</script> is small. From binary SVM above, we know that the distance between one observation and the hyperplane of correct class is <script type="math/tex">\frac{f(x_i, W)_{y_j}} {\|w_{k}\|}</script>. therefore, the <script type="math/tex">L_2</script> penalty leads to the <strong>max margin</strong> property in SVMs and improve the generalization of the performance of the classifiers and avoid overfitting.</p>
+
+<p>This loss function has no constrains and we can calculate the gradient and optimize the <strong>W</strong> using gradient descent algorithm.
+For single example the SVM loss is:</p>
+
+<script type="math/tex; mode=display">L_i = \sum_{j\neq y_i} max(0, w_j^T x_i - w_{y_i}^T x_i + \Delta)</script>
+
+<p>We can differentiate the function with respect to weights. For <strong>w</strong> corresponding to the correct class:</p>
+
+<script type="math/tex; mode=display">\nabla_{w_{y_i}} L_i = - \big(\sum_{y \neq y_i} \mathbb{1}(w_j^T x_i - w_{y_i}^T x_i + \Delta 0)\big) x_i</script>
+
+<p>The gradient for incorrect class:</p>
+
+<script type="math/tex; mode=display">\nabla_{w_j} L_i = \mathbb{1}(w_j^T x_i - w_{y_i}^T x_i + \Delta 0) x_i</script>
+
+<p>where <script type="math/tex">\mathbb{1}</script> is the indicator function that is one if the condition is true or zero otherwise.</p>
+
+<h2 id="get-your-hands-dirty-and-have-fun">7 Get your hands dirty and have fun</h2>
+<ul>
+  <li>Purpose: Implement multi-classification classifier.</li>
+  <li>Data: CIFAR-10 dataset, consists of 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images. The data is available <a href="http://www.cs.toronto.edu/~kriz/cifar.html">here</a>.</li>
+  <li>Setup: I choose Python (IPython, numpy etc.) on Mac for implementation, and the results are published in a IPython notebook.</li>
+  <li><a href="/implementation/SVM.html">click here</a> for the implementation.</li>
+  <li>Following is code to implement the logistic, one-vs-all and softmax classifiers by gradient decent algorithm.</li>
+</ul>
+
+<p><strong>classifiers: algorithms/classifiers.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">algorithms.classifiers.loss_grad_logistic</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">algorithms.classifiers.loss_grad_softmax</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">algorithms.classifiers.loss_grad_svm</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">class</span> <span class="nc">LinearClassifier</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># set up the weight matrix </span>
+
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'sgd'</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+              <span class="n">reg</span> <span class="o">=</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">num_iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">vectorized</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="s">"""
+        Train linear classifer using batch gradient descent or stochastic gradient descent
+
+        Parameters
+        ----------
+        X: (D x N) array of training data, each column is a training sample with D-dimension.
+        y: (N, ) 1-dimension array of target data with length N.
+        method: (string) determine whether using 'bgd' or 'sgd'.
+        batch_size: (integer) number of training examples to use at each step.
+        learning_rate: (float) learning rate for optimization.
+        reg: (float) regularization strength for optimization.
+        num_iters: (integer) number of steps to take when optimization.
+        verbose: (boolean) if True, print out the progress (loss) when optimization.
+
+        Returns
+        -------
+        losses_history: (list) of losses at each training iteration
+        """</span>
+
+        <span class="n">dim</span><span class="p">,</span> <span class="n">num_train</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">num_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="c"># assume y takes values 0...K-1 where K is number of classes</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># initialize the weights with small values</span>
+            <span class="k">if</span> <span class="n">num_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="c"># just need weights for one class</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.001</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c"># weigths for each class</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.001</span>
+
+        <span class="n">losses_history</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_iters</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">'bgd'</span><span class="p">:</span>
+                <span class="n">loss</span><span class="p">,</span> <span class="n">grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_grad</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">vectorized</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># randomly choose a min-batch of samples</span>
+                <span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">num_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                <span class="n">loss</span><span class="p">,</span> <span class="n">grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_grad</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">idxs</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idxs</span><span class="p">],</span> <span class="n">reg</span><span class="p">,</span> <span class="n">vectorized</span><span class="p">)</span> <span class="c"># grad =[K x D]</span>
+            <span class="n">losses_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+            <span class="c"># update weights</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad</span> <span class="c"># [K x D]</span>
+            <span class="c"># print self.W</span>
+            <span class="c"># print 'dsfad', grad.shape</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">print</span> <span class="s">'iteration </span><span class="si">%</span><span class="s">d/</span><span class="si">%</span><span class="s">d: loss </span><span class="si">%</span><span class="s">f'</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">num_iters</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">losses_history</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="s">"""
+        Predict value of y using trained weights
+
+        Parameters
+        ----------
+        X: (D x N) array of data, each column is a sample with D-dimension.
+
+        Returns
+        -------
+        pred_ys: (N, ) 1-dimension array of y for N sampels
+        h_x_mat: Normalized scores
+        """</span>
+        <span class="n">pred_ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">f_x_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">'Logistic'</span><span class="p">:</span>
+            <span class="n">pred_ys</span> <span class="o">=</span> <span class="n">f_x_mat</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="o">=</span><span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c"># multiclassification</span>
+            <span class="n">pred_ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">f_x_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c"># normalized score</span>
+        <span class="n">h_x_mat</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">f_x_mat</span><span class="p">))</span> <span class="c"># [1, N]</span>
+        <span class="n">h_x_mat</span> <span class="o">=</span> <span class="n">h_x_mat</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">pred_ys</span><span class="p">,</span> <span class="n">h_x_mat</span>
+
+    <span class="k">def</span> <span class="nf">loss_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">vectorized</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="s">"""
+        Compute the loss and gradients.
+
+        Parameters
+        ----------
+        The same as self.train()
+
+        Returns
+        -------
+        a tuple of two items (loss, grad)
+        loss: (float)
+        grad: (array) with respect to self.W
+        """</span>
+        <span class="k">pass</span>
+
+<span class="c"># Subclasses of linear classifier</span>
+<span class="k">class</span> <span class="nc">Logistic</span><span class="p">(</span><span class="n">LinearClassifier</span><span class="p">):</span>
+    <span class="s">"""A subclass for binary classification using logistic function"""</span>
+    <span class="k">def</span> <span class="nf">loss_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">vectorized</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">vectorized</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">loss_grad_logistic_vectorized</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">loss_grad_logistic_naive</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Softmax</span><span class="p">(</span><span class="n">LinearClassifier</span><span class="p">):</span>
+    <span class="s">"""A subclass for multi-classicication using Softmax function"""</span>
+    <span class="k">def</span> <span class="nf">loss_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">vectorized</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">vectorized</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">loss_grad_softmax_vectorized</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">loss_grad_softmax_naive</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">SVM</span><span class="p">(</span><span class="n">LinearClassifier</span><span class="p">):</span>
+    <span class="s">"""A subclass for multi-classicication using SVM function"""</span>
+    <span class="k">def</span> <span class="nf">loss_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">vectorized</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">loss_grad_svm_vectorized</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">)</span></code></pre></figure>
+
+<p><strong>Function to compute loss and gradients for SVM classification: algorithms/classifiers/loss_grad_svm.py</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># file: algorithms/classifiers/loss_grad_svm.py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">loss_grad_svm_vectorized</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg</span><span class="p">):</span>
+    <span class="s">"""
+    Compute the loss and gradients using softmax function 
+    with loop, which is slow.
+
+    Parameters
+    ----------
+    W: (K, D) array of weights, K is the number of classes and D is the dimension of one sample.
+    X: (D, N) array of training data, each column is a training sample with D-dimension.
+    y: (N, ) 1-dimension array of target data with length N with lables 0,1, ... K-1, for K classes
+    reg: (float) regularization strength for optimization.
+
+    Returns
+    -------
+    a tuple of two items (loss, grad)
+    loss: (float)
+    grad: (K, D) with respect to W
+    """</span>
+
+    <span class="n">dW</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="n">num_train</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c"># compute all scores</span>
+    <span class="n">scores_mat</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c"># [C x N] matrix</span>
+ 
+    <span class="c"># get the correct class score </span>
+    <span class="n">correct_class_score</span> <span class="o">=</span> <span class="n">scores_mat</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_train</span><span class="p">)]</span> <span class="c"># [1 x N]</span>
+    
+    <span class="n">margins_mat</span> <span class="o">=</span> <span class="n">scores_mat</span> <span class="o">-</span> <span class="n">correct_class_score</span> <span class="o">+</span> <span class="n">delta</span> <span class="c"># [C x N]</span>
+
+    <span class="c"># set the negative score to be 0</span>
+    <span class="n">margins_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">margins_mat</span><span class="p">)</span>
+    <span class="n">margins_mat</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_train</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">margins_mat</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_train</span>
+
+    <span class="c"># add regularization to loss</span>
+    <span class="n">loss</span> <span class="o">+=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">reg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">W</span> <span class="o">*</span> <span class="n">W</span><span class="p">)</span>
+
+    <span class="c"># compute gradient</span>
+    <span class="n">scores_mat_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">scores_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c"># compute the number of margin 0 for each sample</span>
+    <span class="n">num_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">margins_mat</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">scores_mat_grad</span><span class="p">[</span><span class="n">margins_mat</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">scores_mat_grad</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_train</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">num_pos</span>
+
+    <span class="c"># compute dW</span>
+    <span class="n">dW</span> <span class="o">=</span> <span class="n">scores_mat_grad</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_train</span> <span class="o">+</span> <span class="n">reg</span> <span class="o">*</span> <span class="n">W</span>
+    
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">dW</span></code></pre></figure>
+
+<h2 id="reference-and-further-reading">11. Reference and further reading</h2>
+<ul>
+  <li>Andrew Ng’s <a href="https://www.coursera.org/course/ml">Machine learning on Coursera</a></li>
+  <li>Machine learing notes on <a href="http://see.stanford.edu/materials/aimlcs229/cs229-notes3.pdf">Stanford Engineering Everywhere (SEE)</a></li>
+  <li>Stanford University open course <a href="http://vision.stanford.edu/teaching/cs231n/">CS231n</a></li>
+  <li>The University of Nottingham <a href="http://modulecatalogue.nottingham.ac.uk/Nottingham/asp/moduledetails.asp?year_id=000113&amp;crs_id=021211">Machine Learning Module</a></li>
+</ul>
+
+<!-- ## New idea:
+- asymmetric prediction, max margins for two classes are different.
+- Two mimimal margin classifier
+ -->
+
