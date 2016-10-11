@@ -1,13 +1,13 @@
 ---
 layout: post
-title: CNN Face Dectection
-excerpt: "My PhD work about object specific deep features for Face Dectection"
+title: CNN Face Detection
+excerpt: "My PhD work about object specific deep features for Face Detection"
 modified: 2015-12-7
 comments: true
 mathjax: true
 ---
 
-The post records some notes for CNN Face Dectection project in my PhD in the University of Nottingham.
+The post records some notes for CNN Face Detection project in my PhD in the University of Nottingham.
 
 
 ### Note 1: Make image square and crop/split it into sub_images
@@ -145,7 +145,7 @@ class SubImage(object):
 
 {% endhighlight %}
 
-** Convert from subimage to original image
+**Convert from subimage to original image**
 
 The process is a little tricky. Because the subimages are actually cropped from padded image, the coordinates of subimages in the coordinate of original image can be less than 0, and also bigger than the original image size (see following figure). So we should make sure the details right when convert subimage information (e.g. human face bounding box) to original image coordinates.
 ![padded and subimage]({{ site.url }}/images/CNNFace/1.png "padded and subimage")

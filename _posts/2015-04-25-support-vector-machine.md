@@ -1,13 +1,13 @@
 ---
 layout: post
 title: Support Vector Machine
-excerpt: "The support vector machine alorithm for classification"
+excerpt: "The support vector machine algorithm for classification"
 modified: 2015-04-25
 comments: true
 mathjax: true
 ---
 
-Support vector machine (SVM) is often considered one of the best “out of the box” classifiers, and in this post I try to explain how we can come up with this alogrithm from scratch. 
+Support vector machine (SVM) is often considered one of the best “out of the box” classifiers, and in this post I try to explain how we can come up with this algorithm from scratch. 
 
 I also implement the SMV for image classification with [CIFAR-10 dataset](http://www.cs.toronto.edu/~kriz/cifar.html) by Python (numpy). [This]({{ site.url }}/implementation/SVM.html) is for mutli-classification by using SVM loss. 
 
@@ -179,12 +179,12 @@ We need to generalize to the multiple class case, that’s to say, the value of 
 
 ####Transfer multi-class classification into binary classification problem
 
-We need change multiple classes into two classes, and the idea is to construct several logistic classifier for each class. We set the value of y (label) of one class to 1, and 0 for other classes. Thus, if we have K classes, we build K SVM and use it for prediction. The idea is the same as use [logistic regression](http://houxianxu.github.io/logistic-softmax-regression/#multiclass) for multi-classfication.
+We need change multiple classes into two classes, and the idea is to construct several logistic classifier for each class. We set the value of y (label) of one class to 1, and 0 for other classes. Thus, if we have K classes, we build K SVM and use it for prediction. The idea is the same as use [logistic regression](http://houxianxu.github.io/logistic-softmax-regression/#multiclass) for multi-classification.
 <!-- ![One vs all]({{ site.url }}/images/logisticRegression/4.png "Figure 4") -->
 <center><img src="/images/logisticRegression/4.png" width="80%"></center>
 
 
-#### Multiclass Support Vector Machine loss
+#### Multi-class Support Vector Machine loss
 Similar to [softmax](http://houxianxu.github.io/logistic-softmax-regression/), For mutilple classes problems (K categoires), it is possible to establish a mapping function for each class. We can simply use a linear mapping for all classes (K mapping function):
 
 $$ f(x^{(i)}, W, b) = Wx^{(i)} + b =f(x^{(i)}, W) = Wx^{(i)} \:(bias \: trick)$$
@@ -256,7 +256,7 @@ class LinearClassifier:
     def train(self, X, y, method='sgd', batch_size=200, learning_rate=1e-4,
               reg = 1e3, num_iters=1000, verbose=False, vectorized=True):
         """
-        Train linear classifer using batch gradient descent or stochastic gradient descent
+        Train linear classifier using batch gradient descent or stochastic gradient descent
 
         Parameters
         ----------
@@ -434,7 +434,7 @@ def loss_grad_svm_vectorized(W, X, y, reg):
 
 ## 11. Reference and further reading
 * Andrew Ng's [Machine learning on Coursera](https://www.coursera.org/course/ml)
-* Machine learing notes on [Stanford Engineering Everywhere (SEE)](http://see.stanford.edu/materials/aimlcs229/cs229-notes3.pdf)
+* Machine learning notes on [Stanford Engineering Everywhere (SEE)](http://see.stanford.edu/materials/aimlcs229/cs229-notes3.pdf)
 * Stanford University open course [CS231n](http://vision.stanford.edu/teaching/cs231n/)
 * The University of Nottingham [Machine Learning Module](http://modulecatalogue.nottingham.ac.uk/Nottingham/asp/moduledetails.asp?year_id=000113&crs_id=021211)
 

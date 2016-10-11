@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Interpretation of matrix
-excerpt: "This the notes after learning learning algebra"
+excerpt: "This the notes after learning linear algebra"
 modified: 2015-04-25
 comments: true
 mathjax: true

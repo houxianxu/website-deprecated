@@ -11,7 +11,9 @@
     <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Xianxu Hou's blog posts" />
 
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/style.css">
 
     <!-- Google Analytics -->
     <script>
@@ -53,7 +55,7 @@
       </a>
       <div class="trigger">
         
-          <a class="page-link" href="/about/">About</a>
+          <a class="page-link" href="/test/">About</a>
         
           
         
@@ -62,6 +64,8 @@
           
         
           
+        
+          <a class="page-link" href="/projects/">Projects</a>
         
       </div>
     </nav>
@@ -80,7 +84,7 @@
   </header>
 
   <article class="post-content">
-  <p>Support vector machine (SVM) is often considered one of the best “out of the box” classifiers, and in this post I try to explain how we can come up with this alogrithm from scratch.</p>
+  <p>Support vector machine (SVM) is often considered one of the best “out of the box” classifiers, and in this post I try to explain how we can come up with this algorithm from scratch.</p>
 
 <p>I also implement the SMV for image classification with <a href="http://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10 dataset</a> by Python (numpy). <a href="http://houxianxu.github.io/implementation/SVM.html">This</a> is for mutli-classification by using SVM loss.</p>
 
@@ -249,11 +253,11 @@ Then we get:</p>
 
 <p>####Transfer multi-class classification into binary classification problem</p>
 
-<p>We need change multiple classes into two classes, and the idea is to construct several logistic classifier for each class. We set the value of y (label) of one class to 1, and 0 for other classes. Thus, if we have K classes, we build K SVM and use it for prediction. The idea is the same as use <a href="http://houxianxu.github.io/logistic-softmax-regression/#multiclass">logistic regression</a> for multi-classfication.
+<p>We need change multiple classes into two classes, and the idea is to construct several logistic classifier for each class. We set the value of y (label) of one class to 1, and 0 for other classes. Thus, if we have K classes, we build K SVM and use it for prediction. The idea is the same as use <a href="http://houxianxu.github.io/logistic-softmax-regression/#multiclass">logistic regression</a> for multi-classification.
 <!-- ![One vs all](http://houxianxu.github.io/images/logisticRegression/4.png "Figure 4") --></p>
 <center><img src="/images/logisticRegression/4.png" width="80%" /></center>
 
-<h4 id="multiclass-support-vector-machine-loss">Multiclass Support Vector Machine loss</h4>
+<h4 id="multi-class-support-vector-machine-loss">Multi-class Support Vector Machine loss</h4>
 <p>Similar to <a href="http://houxianxu.github.io/logistic-softmax-regression/">softmax</a>, For mutilple classes problems (K categoires), it is possible to establish a mapping function for each class. We can simply use a linear mapping for all classes (K mapping function):</p>
 
 <script type="math/tex; mode=display">f(x^{(i)}, W, b) = Wx^{(i)} + b =f(x^{(i)}, W) = Wx^{(i)} \:(bias \: trick)</script>
@@ -328,7 +332,7 @@ For single example the SVM loss is:</p>
     <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'sgd'</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
               <span class="n">reg</span> <span class="o">=</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">num_iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">vectorized</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="s">"""
-        Train linear classifer using batch gradient descent or stochastic gradient descent
+        Train linear classifier using batch gradient descent or stochastic gradient descent
 
         Parameters
         ----------
@@ -501,7 +505,7 @@ For single example the SVM loss is:</p>
 <h2 id="reference-and-further-reading">11. Reference and further reading</h2>
 <ul>
   <li>Andrew Ng’s <a href="https://www.coursera.org/course/ml">Machine learning on Coursera</a></li>
-  <li>Machine learing notes on <a href="http://see.stanford.edu/materials/aimlcs229/cs229-notes3.pdf">Stanford Engineering Everywhere (SEE)</a></li>
+  <li>Machine learning notes on <a href="http://see.stanford.edu/materials/aimlcs229/cs229-notes3.pdf">Stanford Engineering Everywhere (SEE)</a></li>
   <li>Stanford University open course <a href="http://vision.stanford.edu/teaching/cs231n/">CS231n</a></li>
   <li>The University of Nottingham <a href="http://modulecatalogue.nottingham.ac.uk/Nottingham/asp/moduledetails.asp?year_id=000113&amp;crs_id=021211">Machine Learning Module</a></li>
 </ul>

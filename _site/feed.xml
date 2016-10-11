@@ -5,13 +5,13 @@
     <description>From Coal Mining to Data Mining</description>
     <link>http://houxianxu.github.io/</link>
     <atom:link href="http://houxianxu.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 02 Oct 2016 10:35:23 +0800</pubDate>
-    <lastBuildDate>Sun, 02 Oct 2016 10:35:23 +0800</lastBuildDate>
+    <pubDate>Tue, 11 Oct 2016 23:09:08 +0800</pubDate>
+    <lastBuildDate>Tue, 11 Oct 2016 23:09:08 +0800</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title>CNN Face Dectection</title>
-        <description>&lt;p&gt;The post records some notes for CNN Face Dectection project in my PhD in the University of Nottingham.&lt;/p&gt;
+        <title>CNN Face Detection</title>
+        <description>&lt;p&gt;The post records some notes for CNN Face Detection project in my PhD in the University of Nottingham.&lt;/p&gt;
 
 &lt;h3 id=&quot;note-1-make-image-square-and-cropsplit-it-into-subimages&quot;&gt;Note 1: Make image square and crop/split it into sub_images&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Make image square&lt;/strong&gt;&lt;/p&gt;
@@ -147,7 +147,7 @@ In addition, we can use SubImage Class to store the information to convert sub_i
         &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot; convert (y, x) in the subimage to the parent image coordinate system &quot;&quot;&quot;&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sup_y0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sup_x0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;** Convert from subimage to original image&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Convert from subimage to original image&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;The process is a little tricky. Because the subimages are actually cropped from padded image, the coordinates of subimages in the coordinate of original image can be less than 0, and also bigger than the original image size (see following figure). So we should make sure the details right when convert subimage information (e.g. human face bounding box) to original image coordinates.
 &lt;img src=&quot;http://houxianxu.github.io/images/CNNFace/1.png&quot; alt=&quot;padded and subimage&quot; title=&quot;padded and subimage&quot; /&gt;&lt;/p&gt;
@@ -634,7 +634,7 @@ A[v_1, ..., v_r, ..., v_n] = [u_1, ... ,u_r, ..., u_m] \begin{bmatrix}\sigma_1&a
     
       <item>
         <title>Support Vector Machine</title>
-        <description>&lt;p&gt;Support vector machine (SVM) is often considered one of the best “out of the box” classifiers, and in this post I try to explain how we can come up with this alogrithm from scratch.&lt;/p&gt;
+        <description>&lt;p&gt;Support vector machine (SVM) is often considered one of the best “out of the box” classifiers, and in this post I try to explain how we can come up with this algorithm from scratch.&lt;/p&gt;
 
 &lt;p&gt;I also implement the SMV for image classification with &lt;a href=&quot;http://www.cs.toronto.edu/~kriz/cifar.html&quot;&gt;CIFAR-10 dataset&lt;/a&gt; by Python (numpy). &lt;a href=&quot;http://houxianxu.github.io/implementation/SVM.html&quot;&gt;This&lt;/a&gt; is for mutli-classification by using SVM loss.&lt;/p&gt;
 
@@ -803,11 +803,11 @@ Then we get:&lt;/p&gt;
 
 &lt;p&gt;####Transfer multi-class classification into binary classification problem&lt;/p&gt;
 
-&lt;p&gt;We need change multiple classes into two classes, and the idea is to construct several logistic classifier for each class. We set the value of y (label) of one class to 1, and 0 for other classes. Thus, if we have K classes, we build K SVM and use it for prediction. The idea is the same as use &lt;a href=&quot;http://houxianxu.github.io/logistic-softmax-regression/#multiclass&quot;&gt;logistic regression&lt;/a&gt; for multi-classfication.
+&lt;p&gt;We need change multiple classes into two classes, and the idea is to construct several logistic classifier for each class. We set the value of y (label) of one class to 1, and 0 for other classes. Thus, if we have K classes, we build K SVM and use it for prediction. The idea is the same as use &lt;a href=&quot;http://houxianxu.github.io/logistic-softmax-regression/#multiclass&quot;&gt;logistic regression&lt;/a&gt; for multi-classification.
 &lt;!-- ![One vs all](http://houxianxu.github.io/images/logisticRegression/4.png &quot;Figure 4&quot;) --&gt;&lt;/p&gt;
 &lt;center&gt;&lt;img src=&quot;/images/logisticRegression/4.png&quot; width=&quot;80%&quot; /&gt;&lt;/center&gt;
 
-&lt;h4 id=&quot;multiclass-support-vector-machine-loss&quot;&gt;Multiclass Support Vector Machine loss&lt;/h4&gt;
+&lt;h4 id=&quot;multi-class-support-vector-machine-loss&quot;&gt;Multi-class Support Vector Machine loss&lt;/h4&gt;
 &lt;p&gt;Similar to &lt;a href=&quot;http://houxianxu.github.io/logistic-softmax-regression/&quot;&gt;softmax&lt;/a&gt;, For mutilple classes problems (K categoires), it is possible to establish a mapping function for each class. We can simply use a linear mapping for all classes (K mapping function):&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x^{(i)}, W, b) = Wx^{(i)} + b =f(x^{(i)}, W) = Wx^{(i)} \:(bias \: trick)&lt;/script&gt;
@@ -882,7 +882,7 @@ For single example the SVM loss is:&lt;/p&gt;
     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sgd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;batch_size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;learning_rate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1e-4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
               &lt;span class=&quot;n&quot;&gt;reg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1e3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_iters&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vectorized&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
         &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;
-        Train linear classifer using batch gradient descent or stochastic gradient descent
+        Train linear classifier using batch gradient descent or stochastic gradient descent
 
         Parameters
         ----------
@@ -1055,7 +1055,7 @@ For single example the SVM loss is:&lt;/p&gt;
 &lt;h2 id=&quot;reference-and-further-reading&quot;&gt;11. Reference and further reading&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;Andrew Ng’s &lt;a href=&quot;https://www.coursera.org/course/ml&quot;&gt;Machine learning on Coursera&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Machine learing notes on &lt;a href=&quot;http://see.stanford.edu/materials/aimlcs229/cs229-notes3.pdf&quot;&gt;Stanford Engineering Everywhere (SEE)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Machine learning notes on &lt;a href=&quot;http://see.stanford.edu/materials/aimlcs229/cs229-notes3.pdf&quot;&gt;Stanford Engineering Everywhere (SEE)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Stanford University open course &lt;a href=&quot;http://vision.stanford.edu/teaching/cs231n/&quot;&gt;CS231n&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;The University of Nottingham &lt;a href=&quot;http://modulecatalogue.nottingham.ac.uk/Nottingham/asp/moduledetails.asp?year_id=000113&amp;amp;crs_id=021211&quot;&gt;Machine Learning Module&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -1838,7 +1838,7 @@ Where &lt;script type=&quot;math/tex&quot;&gt;x^{(i)}&lt;/script&gt; is vector o
 &lt;p&gt;Because of non-cs background, I think it is also an wonderful opportunity to learn something new in CS such as front-end technologies.&lt;/p&gt;
 
 &lt;h2 id=&quot;logic-behind-every-post&quot;&gt;Logic behind every post&lt;/h2&gt;
-&lt;p&gt;Most posts will discuss machine algorithms, of course, there are many good books and tutorials introducing these. However, what I want to do is not just to introduce the alogrithms, instead I assume that one algorithm had not been invented by predecessors, would we be able to come up with the algorithm?&lt;/p&gt;
+&lt;p&gt;Most posts will discuss machine algorithms, of course, there are many good books and tutorials introducing these. However, what I want to do is not just to introduce the algorithms, instead I assume that one algorithm had not been invented by predecessors, would we be able to come up with the algorithm?&lt;/p&gt;
 
 &lt;p&gt;I think this kind of assumption could be very helpful to study and do research. The emphasis is about how the algorithm was invented (how to think), not just the algorithm itself. It is like “supervised learning” because the result of algorithm in fact is known to us, so we can use the result to supervise us to learn one algorithm and we can always ask ourselves why I can’t come up with this amazing solution.&lt;/p&gt;
 
