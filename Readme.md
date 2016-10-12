@@ -1,4 +1,6 @@
 # My blog
 
-This is my blog, uses [Jekyll](http://jekyllrb.com/). I was tired of bloated, slow Wordpress that locked up all my content.
+This is my blog based on [Jekyll](http://jekyllrb.com/), and the template is from [Andrej Karpathy](http://cs.stanford.edu/people/karpathy/)
+
+
 

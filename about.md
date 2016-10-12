@@ -1,12 +1,28 @@
 ---
 layout: page
 title: 'About'
-permalink: /test/
+permalink: /about/
 ---
+<head> 
+  <style>
+    .row hr {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .wrap {
+      max-width: 1000px;
+      padding: 0 30px;
+      margin: 0 auto;
+      zoom: 1;
+    }
+  </style>
+</head>
+
 <div>
   <div id="timeline">
     <div class="timelineitem">
-      <div><img class = "img-circle imgme" src="/images/avatar-phd2.jpg" width="80px" style="float:left"></div>     
+      <div><img class = "img-circle imgme" src="/images/avatar-phd2.jpg" width="120px" style="float:left"></div>     
       <div class="tdate">2015 -</div>
       <div class="ttitle">&nbsp;University of Nottingham Ningbo China</div>
       <div class="tdesc">&nbsp;School of Computer Science, Ph.D. student</div>
@@ -14,28 +30,28 @@ permalink: /test/
       <div class="tdesc">&nbsp;Supervisor: <a href="http://www.cs.nott.ac.uk/~pszqiu/">Guoping Qiu</a></div>
     </div>
     <div class="timelineitem">
-      <div><img class = "img-circle imgme" src="/images/avatar-phd1.jpg" width="80px" style="float:right"></div>     
+      <div><img class = "img-circle imgme" src="/images/avatar-phd1.jpg" width="120px" style="float:right"></div>     
       <div class="tdate">2014 - 2015</div>
       <div class="ttitle">University of Nottingham, Ph.D. student&nbsp;</div>
       <div class="tdesc"><a href="https://www.horizon.ac.uk">Horizon Center for Doctoral Training&nbsp;</a></div>
       <div class="tdesc">&nbsp;</div>
     </div>
     <div class="timelineitem">
-      <div><img class = "img-circle imgme" src="/images/avatar-intern.jpg" width="80px" style="float:left"></div>     
+      <div><img class = "img-circle imgme" src="/images/avatar-intern.jpg" width="120px" style="float:left"></div>     
       <div class="tdate">Summer 2014</div>
       <div class="ttitle">&nbsp;Weiboyi, Beijing, Internship</div>
       <div class="tdesc">&nbsp;Data Mining Group</div>
       <div class="tdesc">&nbsp;</div>
     </div>
     <div class="timelineitem">
-      <div><img class = "img-circle imgme" src="/images/avatar-master.jpg" width="80px" style="float:right"></div>
+      <div><img class = "img-circle imgme" src="/images/avatar-master.jpg" width="120px" style="float:right"></div>
      <div class="tdate">2011-2014</div>
       <div class="ttitle">China University of Mining &amp; Technology Beijing</div>
       <div class="tdesc">Master's Degree, Major in (Coal) Geology&nbsp;</div>
       <div class="tdesc">Supervisor: Yuegang Tang</div>
     </div>
     <div class="timelineitem">
-      <div><img class = "img-circle imgme" src="/images/avatar-bachelor.jpg" width="80px" style="float:left"></div>      
+      <div><img class = "img-circle imgme" src="/images/avatar-bachelor.jpg" width="120px" style="float:left"></div>      
       <div class="tdate">2007-2011</div>
       <div class="ttitle">China University of Mining &amp; Technology Beijing</div>
       <div class="tdesc">&nbsp;Bachelor's Degree, Major in Geography</div>
@@ -86,11 +102,11 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
   <div class="row">
     <div class="col-md-6">
       <div class="pubimg">
-        <img src="/assets/osc-face-detection/overview.png">
+        <img src="/assets/osc-face-detection/overview.png" width="90%">
       </div>
       <hr />
       <div class="pubimg">
-        <img src="/assets/osc-face-detection/detected_examples.png">
+        <img src="/assets/osc-face-detection/detected_examples.png" width="90%">
       </div>
       
     </div>
@@ -113,11 +129,11 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
   <div class="row">
     <div class="col-md-6">
       <div class="pubimg">
-        <img src="/assets/ke-avtd/parse.png">
+        <img src="/assets/ke-avtd/parse.png" width="90%">
       </div>
       <hr />
       <div class="pubimg">
-        <img src="/assets/ke-avtd/retrieval.png">
+        <img src="/assets/ke-avtd/retrieval.png" width="90%">
       </div>  
     </div>
     <div class="col-md-6">
@@ -193,7 +209,7 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
   <div class="row">
     <div class="col-md-6">
       <div class="pubimg">
-        <img src="/assets/geology/shanxi.png">
+        <img src="/assets/geology/shanxi.png" width="90%">
       </div>
     </div>
     <div class="col-md-6">
@@ -223,7 +239,7 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
     <div class="col-md-4">
       <div class="pets"><center>Robot Fire Fighting</center></div>
       <div>
-        <a href="https://www.youtube.com/watch?v=Q1NCNPs0o1Y" target="_blank"><img src="/assets/pet-project/robot_fire_img.jpg" style="width:100%;border-radius:3px;"></a><br>
+        <a href="https://www.youtube.com/watch?v=Q1NCNPs0o1Y" target="_blank"><img src="/assets/pet-project/robot_fire_img.gif" style="width:100%;border-radius:3px;"></a><br>
       </div>
     </div>
     <div class="col-md-4">
