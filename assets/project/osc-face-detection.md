@@ -14,7 +14,7 @@ We present a method for discovering and exploiting object specific deep features
 </p>
 </div>
 
-<a href=""><img src='/assets/osc-face-detection/web_miniature.png' width="100%"></a>
+<a href="https://arxiv.org/abs/1609.01366"><img src='/assets/osc-face-detection/web_miniature.png' width="100%"></a>
 
 
 <div style="background-color:#f7f6f1">

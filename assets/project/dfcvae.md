@@ -13,7 +13,7 @@ permalink: assets/project/dfcvae
 </p>
 </div>
 
-<a href=""><img src='/assets/dfcvae/web_miniature.png' width="100%"></a>
+<a href="https://arxiv.org/abs/1610.00291"><img src='/assets/dfcvae/web_miniature.png' width="100%"></a>
 
 
 <div style="background-color:#f7f6f1">
