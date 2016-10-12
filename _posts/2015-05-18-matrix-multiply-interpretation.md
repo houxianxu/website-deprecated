@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Interpretation of matrix
+title: Interpretation of Matrix
 excerpt: "This the notes after learning linear algebra"
 modified: 2015-04-25
 comments: true

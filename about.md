@@ -239,12 +239,12 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
     <div class="col-md-4">
       <div class="pets"><center>Robot Fire Fighting</center></div>
       <div>
-        <a href="https://www.youtube.com/watch?v=Q1NCNPs0o1Y" target="_blank"><img src="/assets/pet-project/robot_fire_img.gif" style="width:100%;border-radius:3px;"></a><br>
+        <a href="https://www.youtube.com/watch?v=Q1NCNPs0o1Y" target="_blank"><img src="/assets/pet-project/robotfire.gif" style="width:100%;border-radius:3px;"></a><br>
       </div>
     </div>
     <div class="col-md-4">
       <div class="pets"><center>Utopian Short Film</center></div>
-      <a href="https://mediaspace.nottingham.ac.uk/media/Group4-Utopian/1_10b9r3a1" target="_blank"><img src="/assets/pet-project/utopian.png" style="width:100%;border-radius:3px;"></a><br>
+      <a href="https://mediaspace.nottingham.ac.uk/media/Group4-Utopian/1_10b9r3a1" target="_blank"><img src="/assets/pet-project/Utopian.png" style="width:100%;border-radius:3px;"></a><br>
     </div>
    <div class="col-md-4">
       <div class="pets"><center>Dystopian Short Film</center></div>
