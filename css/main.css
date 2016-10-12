@@ -28,7 +28,7 @@ a:visited { color: #205caa; }
 .wrap:after { content:""; display:table; }
 .wrap:after { clear: both; }
 .wrap {
-  max-width: 800px;
+  max-width: 900px;
   padding: 0 30px;
   margin: 0 auto;
   zoom: 1;
@@ -91,10 +91,10 @@ a:visited { color: #205caa; }
 
 .footer-col-1 {
   width: 270px; /*fallback*/
-  width: -webkit-calc(35% - 10px);
-  width: -moz-calc(35% - 10px);
-  width: -o-calc(35% - 10px);
-  width: calc(35% - 10px);
+  width: -webkit-calc(25% - 10px);
+  width: -moz-calc(25% - 10px);
+  width: -o-calc(25% - 10px);
+  width: calc(25% - 10px);
   margin-right: 10px
 }
 .footer-col-2 {
@@ -107,10 +107,17 @@ a:visited { color: #205caa; }
 }
 .footer-col-3 {
   width: 335px; /*fallback*/
-  width: -webkit-calc(41.875%);
-  width: -moz-calc(41.875%);
-  width: -o-calc(41.875%);
-  width: calc(41.875%);
+  width: -webkit-calc(33.125% - 10px);
+  width: -moz-calc(33.125%);
+  width: -o-calc(33.125%);
+  width: calc(33.125%);
+}
+.footer-col-4 {
+  width: 220; /*fallback*/
+  width: -webkit-calc(18.75%);
+  width: -moz-calc(18.75%);
+  width: -o-calc(18.75%);
+  width: calc(18.75%);
 }
 
 .site-footer ul { list-style: none; }

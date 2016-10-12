@@ -1,5 +1,10 @@
 /* Based on http://cs.stanford.edu/people/karpathy/style.css*/
 
+body {
+  font-family: 'sans-serif';
+  font-size: 16px;
+}
+
 .imgme {
   border: 2px solid white;
   box-shadow: #AAA 0px 0px 2px 0px; 
@@ -69,17 +74,17 @@
 }
 
 .tdate {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 400;
   margin-bottom: -5px;
   color: rgb(132,0,0);
 }
 .ttitle {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 400;
 }
 .tdesc {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 300;
 }
 @media (max-width: 768px) {
@@ -99,8 +104,8 @@
 
 
 .pubt {
-  font-size: 15px;
-  font-weight:400;
+  font-size: 20px;
+  font-weight:bold;
   color: #000;
 }
 @media (max-width: 768px) {
@@ -114,7 +119,7 @@
   }
 }
 .pubd {  
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 300;
 }
 .pubimg {
@@ -124,12 +129,12 @@
   max-width: 100%;
 }
 .puba {
-  font-size: 12px;
+  font-size: 14px;
   color: #900;
 }
 .pubv {
   color: #090;
-  font-size: 12px;
+  font-size: 14px;
 }
 .publ {
   padding-top: 2px;
@@ -141,7 +146,7 @@
 }
 
 .publ li {
-  font-size: 12px;
+  font-size: 14px;
   border: 0px solid #CCC;
   padding: 0px;
   margin: 0px 2px;
@@ -155,9 +160,18 @@
 .pub {
 }
 
-
 .bold {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 0;
-    border-top: 1px solid #9d9d9d;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #9d9d9d;
+}
+
+
+.pets {
+  font-size: 16px;
+  margin-bottom: 5px;
+  font-weight: 400;
+}
+
+
