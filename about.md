@@ -89,7 +89,7 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
           <div class="puba"><b>Xianxu Hou</b>, Linlin Shen, Ke Sun, Guoping Qiu</div>
           <div class="publ">
             <ul>
-              <li><a href="/projects/dfcvae">[Project]</a></li>
+              <li><a href="/assets/project/dfcvae">[Project]</a></li>
               <li><a href="https://arxiv.org/abs/1610.00291">[arXiv]</a></li>
             </ul>
           </div>
@@ -117,7 +117,7 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
         <div class="puba"><b>Xianxu Hou</b>, Ke Sun, Linlin Shen, Guoping Qiu</div>
         <div class="publ">
           <ul>
-            <li><a href="/projects/osc-face-detection">[Project]</a></li>
+            <li><a href="/assets/project/osc-face-detection">[Project]</a></li>
             <li><a href="https://arxiv.org/abs/1609.01366">[arXiv]</a></li>
           </ul>
         </div>
