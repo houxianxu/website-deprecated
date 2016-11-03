@@ -255,7 +255,7 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
 
   <div class="row">
     <div class="col-md-4">
-      <div class="pets"><center>Robot Fire Fighting</center></div>
+      <div class="pets"><center>Tetris</center></div>
       <div>
         <a href="http://houxianxu.herokuapp.com/project3_tetris/tetris.html" target="_blank"><img src="/assets/pet-project/tetris.png" style="width:100%;border-radius:3px;"></a><br>
       </div>
