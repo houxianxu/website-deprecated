@@ -15,6 +15,11 @@ permalink: assets/project/dfcvae
 
 <a href="https://arxiv.org/abs/1610.00291"><img src='/assets/dfcvae/web_miniature.png' width="100%"></a>
 
+<div style="background-color:#f7f6f1">
+<h4 style="padding-top:10px"><b>Code</b></h4>
+<li>Code is available on <a href="https://github.com/houxianxu/DFC-VAE">Github</a></li>
+</div>
+
 
 <div style="background-color:#f7f6f1">
 <h4 style="padding-top:10px"><b>Example Results</b></h4>

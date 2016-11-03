@@ -91,6 +91,7 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
             <ul>
               <li><a href="/assets/project/dfcvae">[Project]</a></li>
               <li><a href="https://arxiv.org/abs/1610.00291">[arXiv]</a></li>
+              <li><a href="https://github.com/houxianxu/DFC-VAE">[Code]</a></li>
             </ul>
           </div>
         </div>
