@@ -87,6 +87,7 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
           <div class="pubt">Deep Feature Consistent Variational Autoencoder</div>
           <div class="pubd">We present a novel method for constructing Variational Autoencoder (VAE). Instead of using pixel-by-pixel loss, we enforce deep feature consistency between the input and the output of a VAE, which ensures the VAE's output to preserve the spatial correlation characteristics of the input, thus leading the output to have a more natural visual appearance and better perceptual quality. Based on recent deep learning works such as style transfer, we employ a pre-trained deep convolutional neural network (CNN) and use its hidden features to define a feature perceptual loss for VAE training. Evaluated on the CelebA face dataset, we show that our model produces better results than other methods in the literature. We also show that our method can produce latent vectors that can capture the semantic information of face expressions and can be used to achieve state-of-the-art performance in facial attribute prediction.</div>
           <div class="puba"><b>Xianxu Hou</b>, Linlin Shen, Ke Sun, Guoping Qiu</div>
+          <div class="pubv">WACV 2017</div>
           <div class="publ">
             <ul>
               <li><a href="/assets/project/dfcvae">[Project]</a></li>
