@@ -68,6 +68,37 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
 <center><h2>Publications</h2></center>
 
 <div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="pubimg">
+          <img src="/assets/inverse-halftoning/companding_small.png" width="88%">
+        </div>
+        <hr />
+        <div class="pubimg">
+          <img src="/assets/inverse-halftoning/halftone_small.png" width="80%">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="pub">
+          <div class="pubt">Image Companding and Inverse Halftoning using Deep Convolutional Neural Networks</div>
+          <div class="pubd">This paper presents a deep learning technology for tackling two traditional low-level image processing problems, companding and inverse halftoning. First, to the best knowledge of the authors, this is the first work that has successfully developed deep learning based solutions to these two traditional low-level image processing problems. Second, building on insights into the properties of visual quality of images and the internal representation properties of a deep convolutional neural network (CNN) and inspired by recent success of deep learning in other image processing applications, this paper has developed an effective deep learning method that trains a deep CNN as a nonlinear transformation function to map a lower bit depth image to higher bit depth or from a halftone image to a continuous tone image, and at the same time employs another pretrained deep CNN as a feature extractor to derive visually important features to construct the objective function for the training of the transformation CNN. Extensive experimental results are presented to show that the new deep learning based solution significantly outperforms previous methods and achieves new state-of-the-art results.
+          </div>
+          <div class="puba"><b>Xianxu Hou</b>, Guoping Qiu</div>
+          <!-- <div class="pubv"></div> -->
+          <div class="publ">
+            <ul>
+              <li><a href="/assets/project/inverse-halftoning">[Project]</a></li>
+              <li><a href="https://arxiv.org/abs/1707.00116">[arXiv]</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+
+
     <div class="row">
       <div class="col-md-6">
         <div class="pubimg">
