@@ -12,3 +12,5 @@ Here are some projects I've been involved.
 
 * [Deep Feature Consistent Deep Image Transformations: Downscaling, Decolorization and HDR Tone Mapping](/assets/project/dfc-dit)
 
+* [Image Companding and Inverse Halftoning using Deep Convolutional Neural Networks](/assets/project/inverse-halftoning)
+
