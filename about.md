@@ -72,6 +72,39 @@ I am **Xianxu Hou (侯贤旭)**, a PhD student at University of Nottingham worki
     <div class="row">
       <div class="col-md-6">
         <div class="pubimg">
+          <img src="/assets/dfc-dit/mini_downscaling.png" width="85%">
+        </div>
+        <hr />
+        <div class="pubimg">
+          <img src="/assets/dfc-dit/decolorization.png" width="85%">
+        </div>
+        <hr />
+        <div class="pubimg">
+          <img src="/assets/dfc-dit/hdr1.png" width="85%">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="pub">
+          <div class="pubt">Deep Feature Consistent Deep Image Transformations: Downscaling, Decolorization and HDR Tone Mapping</div>
+          <div class="pubd">Building on crucial insights into the determining factors of the visual integrity of an image and the property of deep convolutional neural network (CNN), we have developed the Deep Feature Consistent Deep Image Transformation (DFC-DIT) framework which unifies challenging one-to-many mapping image processing problems such as image downscaling, decolorization (colour to grayscale conversion) and high dynamic range (HDR) image tone mapping. DFC-DIT uses one CNN as a non-linear mapper to transform an input image to an output image following the deep feature consistency principle which is enforced through another pretrained and fixed deep CNN. Unlike applications in related  literature, none of these problems has a known ground truth or target for a supervised learning system. For each problem, we reason about a suitable learning objective function and develop an effective solution under the DFC-DIT framework. This is the first work that uses deep learning to solve and unify these three common image processing tasks. We present experimental results to demonstrate the effectiveness of the DFC-DIT technique and its state of the art performances.
+          </div>
+          <div class="puba"><b>Xianxu Hou</b>, Jiang Duan, Guoping Qiu</div>
+          <!-- <div class="pubv"></div> -->
+          <div class="publ">
+            <ul>
+              <li><a href="/assets/project/dfc-dit">[Project]</a></li>
+              <li><a href="https://arxiv.org/abs/1707.09482">[arXiv]</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="pubimg">
           <img src="/assets/inverse-halftoning/companding_small.png" width="88%">
         </div>
         <hr />

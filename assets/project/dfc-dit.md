@@ -51,8 +51,9 @@ Building on crucial insights into the determining factors of the visual integrit
 
 <li style="background-color:#f7f6f1"><b>HDR Image Tone Mapping</b></li>
 <div style="background-color:#f7f6f1"><center><img src='/assets/dfc-dit/hdr.png' width="100%"></center></div>
+<div style="background-color:#f7f6f1"><center><img src='/assets/dfc-dit/hdr1.png' width="100%"></center></div>
 <p>A comparison with different level feature perceptual loss.</p>
 <div style="background-color:#f7f6f1"><center><img src='/assets/dfc-dit/hdr_dfc.png' width="100%"></center></div>
-<p>A comparison with different gamma adjustment.</p>
-<div style="background-color:#f7f6f1"><center><img src='/assets/dfc-dit/hdr_gamma.png' width="100%"></center></div>
+<p>A demonstration of the effects of logarithmic compression.</p>
+<div style="background-color:#f7f6f1"><center><img src='/assets/dfc-dit/hdr_logscale.png' width="100%"></center></div>
 
