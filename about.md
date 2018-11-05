@@ -24,7 +24,7 @@ permalink: /about/
     <div class="timelineitem">
       <div><img class = "img-circle imgme" src="/images/avatar-phd2.jpg" width="120px" style="float:left"></div>     
       <div class="tdate">2015 -</div>
-      <div class="ttitle">&nbsp;University of Nottingham Ningbo China</div>
+      <div class="ttitle">&nbsp;University of Nottingham</div>
       <div class="tdesc">&nbsp;School of Computer Science, Ph.D. student</div>
       <div class="tdesc">&nbsp;Computer Vision, Deep Learning</div>
       <div class="tdesc">&nbsp;Supervisor: <a href="http://www.cs.nott.ac.uk/~pszqiu/">Guoping Qiu</a></div>
