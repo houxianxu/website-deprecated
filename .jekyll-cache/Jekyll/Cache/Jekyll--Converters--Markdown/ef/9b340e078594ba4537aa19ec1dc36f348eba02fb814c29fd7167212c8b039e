@@ -1,0 +1,243 @@
+I"@'<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="keywords" content="CLIMS" />
+    <meta name="description" content="CLIMS" />
+    <!--<link href="CSS/bootstrap.min.css" media="all" rel="stylesheet">-->
+    <link href="./files/main.css" media="all" rel="stylesheet" />
+    <title>CLIMS: Cross Language Image Matching for Weakly Supervised Semantic Segmentation</title>
+    <style>
+        font.italic {
+            font-style: italic;
+        }
+        
+        .isDisabled {
+            pointer-events: none;
+            cursor: default;
+            text-decoration: none;
+            color: black;
+        }
+        
+        .lightfont {
+            font-size: medium;
+            font-weight: normal;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section id="headinformation" class="sectionwhite">
+        <table id="tbInformation" width="100%">
+            <tbody>
+                <tr>
+                    <td align="center">
+                        <h1>Cross Language Image Matching for Weakly Supervised Semantic Segmentation </h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="https://sierkinhane.github.io" target="_blank">Jinheng Xie</a>&nbsp;&nbsp;&nbsp;
+                        <a href="https://scholar.google.com.sg/citations?user=oK8Q-HwAAAAJ&amp;hl=en" target="_blank">Xianxu Hou</a> &nbsp;&nbsp;&nbsp; Kai Ye &nbsp;&nbsp;&nbsp;
+                        <a href="https://scholar.google.com/citations?user=AZ_y9HgAAAAJ&amp;hl=en" target="_blank">Linlin Shen</a> &nbsp;&nbsp;&nbsp;
+
+                        <p align="center">
+                            <small>
+                                Computer Vision Institute, Shenzhen University
+                            </small>
+                        </p>
+
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <img src="./files/CLIMS.png" border="12" height="380" />
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="Abstract" class="sectionwhite">
+        <h3> Abstract </h3>
+        <font size="normal">
+            <table cellpadding="3" cellspacing="0" width="100%" class="sectionwhite">
+                <tbody>
+                    <tr>
+                        <td align="left">
+                            &nbsp;&nbsp;&nbsp;&nbsp; It has been widely known that CAM (Class Activation Map) usually only activates discriminative object regions and falsely includes lots of object-related backgrounds. As only a fixed set of image-level object labels are available to the WSSS (weakly supervised semantic segmentation) model, it could be very difficult to suppress those diverse background regions consisting of open set objects. In this paper, we propose a novel Cross Language Image Matching (CLIMS) framework, based on the recently introduced Contrastive Language-Image Pre-training (CLIP) model, for WSSS. The core idea of our framework is to introduce natural language supervision to activate more complete object regions and suppress closely-related open background regions. In particular, we design object, background region and text label matching losses to guide the model to excite more reasonable object regions for CAM of each category. In addition, we design a co-occurring background suppression loss to prevent the model from activating closely-related background regions, with a predefined set of class-related background text descriptions. These designs enable the proposed CLIMS to generate a more complete and compact activation map for the target objects. Extensive experiments on PASCAL VOC2012 dataset show that our CLIMS significantly outperforms the previous state-of-the-art methods.
+                            &lt;/br&gt;
+                           
+                            &lt;/p&gt;
+                            &lt;/b&gt;
+                            &lt;/br&gt;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </font>
+    </section>
+
+    <section id="Paper" class="sectionwhite">
+        <h3> Paper</h3>
+        <font size="normal">
+            <table cellpadding="0" cellspacing="0" width="100%" class="sectionwhite">
+                <tr>
+                    <td align="left">
+                        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a ="https://arxiv.org/abs/1910.06278"> arxiv </a> -->
+                        <a href="https://arxiv.org/abs/2203.02668" target="_blank">
+                            <img src="papers/CLIMS-page-0.png" style="border:1px solid black" width="15.5%" />
+                        </a>
+                        <a href="https://arxiv.org/abs/2203.02668" target="_blank">
+                            <img src="papers/CLIMS-page-1.png" style="border:1px solid black" width="15.5%" />
+                        </a>
+                        <a href="https://arxiv.org/abs/2203.02668" target="_blank">
+                            <img src="papers/CLIMS-page-2.png" style="border:1px solid black" width="15.5%" />
+                        </a>
+                        <a href="https://arxiv.org/abs/2203.02668" target="_blank">
+                            <img src="papers/CLIMS-page-3.png" style="border:1px solid black" width="15.5%" />
+                        </a>
+                        <a href="https://arxiv.org/abs/2203.02668" target="_blank">
+                            <img src="papers/CLIMS-page-4.png" style="border:1px solid black" width="15.5%" />
+                        </a>
+                        <a href="https://arxiv.org/abs/2203.02668" target="_blank">
+                            <img src="papers/CLIMS-page-5.png" style="border:1px solid black" width="15.5%" />
+                        </a>
+                        <a href="https://arxiv.org/abs/2203.02668" target="_blank">
+                            Arxiv
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+            </table>
+        </font>
+    </section>
+
+    <section id="Code" class="sectionwhite">
+        <h3> Code</h3>
+        <font size="normal">
+            <table cellpadding="3" cellspacing="0" width="100%" class="sectionwhite">
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will release the training and testing code and the pretrained model at <a href="https://github.com/CVI-SZU/CLIMS"> GitHub</a>.
+                       &lt;/br&gt;
+                        <tr>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+            &lt;/table&gt;
+        &lt;/font&gt;
+    &lt;/section&gt;
+
+    <hr />
+
+    <section id="COCO 2019 Keypoint Detection" class="sectionwhite">
+        <tr>
+            <h2 style="text-align: center;">Visualization</h2>
+   
+        </tr>
+
+
+        <h3>Impact of proposed loss functions</h3>
+        <table cellpadding="3" cellspacing="0" width="100%" class="sectionwhite">
+            <tbody>
+            	<tr>
+                    <td align="center">
+                        <img src="./vis/figure3.png" border="12" height="520" />
+                    </td>
+                </tr>
+                <tr>
+        &lt;/table&gt;
+
+        <h3>Initial CAMs comparison</h3>
+        <table cellpadding="3" cellspacing="0" width="100%" class="sectionwhite">
+            <tbody>
+            	<tr>
+                    <td align="center">
+                        <img src="./vis/figure4.png" border="12" height="520" />
+                    </td>
+                </tr>
+                <tr>
+        &lt;/table&gt;
+    &lt;/section&gt;
+
+    <section id="Citation" class="sectionwhite">
+        <h3> Citation</h3>
+    </section>
+    <section id="Citation" width="60%" class="sectiongray">
+        <table cellpadding="3" cellspacing="0" width="60%" class="sectiongray">
+            <tr>
+                <td>
+                    <pre><code>
+@article{clims,
+  title={Cross Language Image Matching for Weakly Supervised Semantic Segmentation},
+  author={Xie, Jinheng and Hou, Xianxu and Ye, Kai and Shen, Linlin},
+  journal={CVPR},
+  year={2022}
+}
+            &lt;/td&gt;&lt;/tr&gt;
+            </code></pre>
+        &lt;/table&gt;
+    &lt;/section&gt;
+ 
+
+    <br />访问次数:
+    <a href="https://www.easycounter.com/">
+<img src="https://www.easycounter.com/counter.php?clims" border="0" alt="stats counter" /></a>
+    <p></p>
+    <div class="page-header"> </div>
+    <div class="container span11">
+        <a href="https://clustrmaps.com/site/1bnro" title="Visit tracker"><img src="//www.clustrmaps.com/map_v2.png?d=untOnR3Bc54Gi5oXc-hl3EGaWbwuvi_sOJi6_8HogZA&amp;cl=ffffff" /></a>
+    </div>
+
+    &lt;/div&gt;
+    <div class="page-header">
+    </div>
+
+&lt;/body&gt;
+
+&lt;/html&gt;
+</td></tr></table></section></tr></tbody></table></tr></tbody></table></section></td></tr></table></font></section></body>
+:ET

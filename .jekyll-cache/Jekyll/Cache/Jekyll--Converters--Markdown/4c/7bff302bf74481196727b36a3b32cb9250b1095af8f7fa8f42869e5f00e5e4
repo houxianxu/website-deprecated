@@ -1,0 +1,18 @@
+I"<p>Here are some projects I’ve been involved.</p>
+
+<ul>
+  <li>
+    <p><a href="/assets/project/osc-face-detection">Object Specific Deep Feature and Its Application to Face Detection</a></p>
+  </li>
+  <li>
+    <p><a href="/assets/project/dfcvae">Deep Feature Consistent Variational Autoencoder</a></p>
+  </li>
+  <li>
+    <p><a href="/assets/project/dfc-dit">Deep Feature Consistent Deep Image Transformations: Downscaling, Decolorization and HDR Tone Mapping</a></p>
+  </li>
+  <li>
+    <p><a href="/assets/project/inverse-halftoning">Image Companding and Inverse Halftoning using Deep Convolutional Neural Networks</a></p>
+  </li>
+</ul>
+
+:ET

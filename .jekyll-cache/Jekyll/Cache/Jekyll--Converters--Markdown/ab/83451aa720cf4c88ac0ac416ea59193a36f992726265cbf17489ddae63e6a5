@@ -1,0 +1,55 @@
+I"ä<center> <h2><b>GuidedStyle: Attribute knowledge guided style manipulation for semantic face editing</b></h2> </center>
+
+<center> Xianxu Hou, Xiaokang Zhang, Hanbang Liang, Linlin Shen, Zhihui Lai, Jun Wan </center>
+
+<div><img src="/assets/guided-style/teaser.jpg" width="100%" /></div>
+
+<div style="background-color:#f7f6f1">
+<h4 style="padding:10px"><b>Abstract</b></h4>
+<p style="padding:10px">
+Although significant progress has been made in synthesizing high-quality and visually realistic face images by unconditional Generative Adversarial Networks (GANs), there is still a lack of control over the generation process in order to achieve semantic face editing. In this paper, we propose a novel learning framework, called GuidedStyle, to achieve semantic face editing on pretrained StyleGAN by guiding the image generation process with a knowledge network. Furthermore, we allow an attention mechanism in StyleGAN generator to adaptively select a single layer for style manipulation. As a result, our method is able to perform disentangled and controllable edits along various attributes, including smiling, eyeglasses, gender, mustache, hair color and attractive. Both qualitative and quantitative results demonstrate the superiority of our method over other competing methods for semantic face editing. Moreover, we show that our model can be also applied to different types of real and artistic face editing, demonstrating strong generalization ability.</p>
+</div>
+
+<p><a href="https://www.sciencedirect.com/science/article/pii/S0893608021004081"><img src="/assets/guided-style/web_miniature.jpg" width="100%" /></a></p>
+
+<div style="background-color:#f7f6f1">
+<h4 style="padding:10px"><b>Overview</b></h4>
+</div>
+
+<div><img src="/assets/guided-style/overview.jpeg" width="100%" /></div>
+
+<div style="background-color:#f7f6f1">
+	<h4 style="padding:10px"><b>Results</b></h4>
+</div>
+
+<li style="background-color:#fff"><b>Different attribute manipulation </b></li>
+<div><img src="/assets/guided-style/more-attributes.jpeg" width="100%" /></div>
+
+<li style="background-color:#fff"><b>Visual results of continuous editing </b></li>
+<div><img src="/assets/guided-style/continuous_editing.jpeg" width="100%" /></div>
+
+<li style="background-color:#fff"><b>A video demo </b></li>
+
+<div class="blog-entry ftco-animate">
+  <video id="replay-video" controls="" preload="" width="100%">
+  <source src="/assets/guided-style/demo.mp4" type="video/mp4" />
+  </video>
+</div>
+
+<div style="background-color:#f7f6f1"><center><img src="/assets/guided-style/real1_optimized.jpg" width="100%" /></center></div>
+
+<section id="Citation" width="60%">
+                    <pre><code>
+@article{hou2022guidedstyle,
+  title={Guidedstyle: Attribute knowledge guided style manipulation for semantic face editing},
+  author={Hou, Xianxu and Zhang, Xiaokang and Liang, Hanbang and Shen, Linlin and Lai, Zhihui and Wan, Jun},
+  journal={Neural Networks},
+  volume={145},
+  pages={209--220},
+  year={2022},
+  publisher={Elsevier}
+}
+            </code></pre>
+ </section>
+
+:ET

@@ -1,0 +1,24 @@
+I"–<p>Here are some projects Iâ€™ve been involved.</p>
+
+<ul>
+  <li>
+    <p><a href="/assets/project/osc-face-detection">Object Specific Deep Feature and Its Application to Face Detection</a></p>
+  </li>
+  <li>
+    <p><a href="/assets/project/dfcvae">Deep Feature Consistent Variational Autoencoder</a></p>
+  </li>
+  <li>
+    <p><a href="/assets/project/dfc-dit">Deep Feature Consistent Deep Image Transformations: Downscaling, Decolorization and HDR Tone Mapping</a></p>
+  </li>
+  <li>
+    <p><a href="/assets/project/inverse-halftoning">Image Companding and Inverse Halftoning using Deep Convolutional Neural Networks</a></p>
+  </li>
+  <li>
+    <p><a href="/assets/project/guided-style">GuidedStyle: Attribute knowledge guided style manipulation for semantic face editing</a></p>
+  </li>
+  <li>
+    <p><a href="/assets/project/age-editing">Lifelong Age Transformation with a Deep Generative Prior</a></p>
+  </li>
+</ul>
+
+:ET
