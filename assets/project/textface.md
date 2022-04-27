@@ -10,7 +10,7 @@ permalink: assets/project/textface
 
 <center> <h2><b>TextFace: Text-to-Style Mapping based Face Generation and Manipulation</b></h2> </center>
 
-<center> Xianxu Hou, Xiaokang Zhang, Yudong Li, Linlin Shen </center>
+<center> Xianxu Hou<sup>*</sup> Xiaokang Zhang<sup>*</sup>, Yudong Li, Linlin Shen </center>
 
 <div><img src='/assets/textface/teaser.jpeg' width="100%"></div>
 
